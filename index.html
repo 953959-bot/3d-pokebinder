@@ -11,7 +11,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}
 
-/* Tapete Negro */
+/* Tapete */
 .playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#181820 0%,#040406 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
 .playmat{width:min(96vw,1300px);height:min(88vh,860px);background:#121216;border-radius:28px;border:8px solid #0a0a0d;box-shadow:inset 0 0 90px rgba(0,0,0,.95),0 25px 60px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
 .playmat::before{content:"";position:absolute;inset:16px;border:2px dashed rgba(255,255,255,.06);border-radius:20px;pointer-events:none}
@@ -35,14 +35,6 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .search-item{padding:8px 12px;font-size:11px;color:#d8d0bd;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05)}
 .search-item:hover{background:var(--ac);color:#fff}
 
-.filter-bar{display:flex;gap:6px;margin-bottom:12px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
-.filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px 4px;border-radius:7px;font-size:9px;font-family:var(--px);cursor:pointer;transition:all .2s}
-.filter-btn.active{background:var(--ac);color:#fff}
-
-.badges-container{display:flex;gap:4px;margin-top:4px;justify-content:space-between}
-.badge-icon{font-size:14px;opacity:0.25;transition:opacity .3s, transform .3s;filter:grayscale(1)}
-.badge-icon.active{opacity:1;filter:none;transform:scale(1.15)}
-
 /* Escena y Álbum 3D */
 .scene{--pw:min(42vw,440px);perspective:2200px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%;cursor:grab}
 .scene:active{cursor:grabbing}
@@ -61,7 +53,7 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .sh.active-right .fr{pointer-events:auto!important;z-index:10}
 .sh.active-left .bk *, .sh.active-right .fr *{pointer-events:auto!important}
 
-/* Portada */
+/* Portada y Lomo */
 .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:var(--px);text-align:center;cursor:pointer;pointer-events:auto!important;transition:all .3s;box-shadow:inset 0 0 30px rgba(0,0,0,.6),0 15px 40px rgba(0,0,0,.6);position:relative;padding:20px;height:100%}
 .cover::before{content:"";position:absolute;inset:10px;border:2px double rgba(246,211,107,.4);border-radius:8px;pointer-events:none}
 .cover h1{font-size:20px;margin:0;line-height:1.3;color:#f6d36b}
@@ -85,13 +77,14 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .ft{margin-top:auto;text-align:center;font-family:var(--px);font-size:9px;color:var(--mu)}
 
-/* Slots y Cards */
+/* Huecos Vacíos en Gris Neutral */
 .slot{aspect-ratio:5/7;border-radius:8px;border:0;padding:0;cursor:pointer;background:none;font-family:inherit;display:block;width:100%;position:relative}
-.slot.e{background:#cadba0;border:2px solid #306230;color:#0f380f;font-family:var(--px);display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:6px;transition:transform .15s}
-.slot.e:hover{transform:translateY(-3px)}
-.slot .nn{font-size:9px;align-self:flex-start;margin-left:4px}
-.slot img.sp{width:70%;flex:1;min-height:0;object-fit:contain;image-rendering:pixelated}
-.slot .nm{font-size:8px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slot.e{background:#2b2933;border:2px dashed #484556;color:#8e8a9f;font-family:var(--px);display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:6px;transition:all .15s}
+.slot.e:hover{transform:translateY(-3px);background:#35333f;border-color:#68637c;color:#c0bbd4}
+.slot .nn{font-size:9px;align-self:flex-start;margin-left:4px;opacity:0.7}
+.slot img.sp{width:70%;flex:1;min-height:0;object-fit:contain;image-rendering:pixelated;opacity:0.55;filter:grayscale(0.4)}
+.slot.e:hover img.sp{opacity:0.95;filter:none}
+.slot .nm{font-size:8px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0.8}
 
 .card{position:relative;width:100%;aspect-ratio:5/7;border-radius:4.5%;overflow:hidden;background:#0002}
 .card img{width:100%;height:100%;display:block;object-fit:cover}
@@ -120,11 +113,17 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .acts{display:flex;gap:10px;margin-top:20px}
 .msg{padding:30px 0;text-align:center;color:var(--mu);font-size:14px}
 
-.inspector-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column}
+/* Inspector 3D y Gráfico de Precios */
+.inspector-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
 .inspector-overlay.open{display:flex}
-.inspector-card-wrapper{width:min(80vw,360px);aspect-ratio:5/7;perspective:1000px}
-.inspector-details{margin-top:24px;color:#fff;font-family:var(--px);font-size:12px;text-align:center}
-.inspector-details small{display:block;margin-top:8px;font-family:system-ui;color:var(--mu);font-size:14px}
+.inspector-container{display:flex;gap:30px;max-width:850px;width:100%;background:#181720;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.8);align-items:center}
+.inspector-card-wrapper{width:260px;aspect-ratio:5/7;flex-shrink:0}
+.inspector-info{flex:1;color:#fff;display:flex;flex-direction:column;gap:12px}
+.inspector-info h2{margin:0;font-family:var(--px);font-size:16px;color:#f6d36b}
+.inspector-badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:11px;background:#2b2838;color:#4ade80;font-weight:bold;margin-bottom:6px}
+.chart-container{background:#111017;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-top:6px}
+.chart-title{font-size:10px;font-family:var(--px);color:var(--mu);margin-bottom:8px}
+canvas#priceChart{width:100%;height:140px}
 </style>
 </head>
 <body>
@@ -137,24 +136,10 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
  <div class="hud-sub"><span id="sc">0 de 151 cartas</span><span id="sp">0%</span></div>
  <div class="hud-bar"><i id="sb"></i></div>
 
- <div class="hud-section">Medallas Kanto</div>
- <div class="badges-container">
-  <span class="badge-icon" id="b1">🪨</span><span class="badge-icon" id="b2">💧</span>
-  <span class="badge-icon" id="b3">⚡</span><span class="badge-icon" id="b4">🌈</span>
-  <span class="badge-icon" id="b5">🪷</span><span class="badge-icon" id="b6">👁️</span>
-  <span class="badge-icon" id="b7">🔥</span><span class="badge-icon" id="b8">🏆</span>
- </div>
-
  <div class="hud-section">Ir a Pokémon</div>
  <input type="text" class="hud-input" id="pokedexSearch" placeholder="🔍 Buscar por nombre o nº..." autocomplete="off">
  <div class="search-results" id="searchResults"></div>
 
- <div class="filter-bar">
-  <button class="filter-btn active" id="fAll">Todas</button>
-  <button class="filter-btn" id="fOwned">Tengo</button>
-  <button class="filter-btn" id="fEmpty">Falta</button>
- </div>
- 
  <div class="hud-section">Gestión</div>
  <div class="hud-actions">
   <button class="hud-btn" id="exportBtn">Exportar</button>
@@ -177,10 +162,24 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 <div class="nav"><button class="btn" id="prev">‹ Anterior</button><span id="lb">PORTADA</span><button class="btn" id="next">Siguiente ›</button></div>
 <div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
 
+<!-- Inspector Detallado de Carta -->
 <div class="inspector-overlay" id="inspector">
- <div class="inspector-card-wrapper" id="insCard"></div>
- <div class="inspector-details" id="insText"></div>
- <button class="btn ghost" style="margin-top:20px;color:#fff;border-color:#fff" id="closeIns">Cerrar Inspector</button>
+ <div class="inspector-container">
+  <div class="inspector-card-wrapper" id="insCard"></div>
+  <div class="inspector-info">
+   <h2 id="insTitle">Charizard</h2>
+   <div><span class="inspector-badge" id="insRarity">Rare Holo</span></div>
+   <div style="font-size:13px;color:#a09cb0;" id="insSet">Base Set • Nº 4/102</div>
+   <div style="font-size:18px;font-weight:bold;color:#4ade80;margin-top:4px;" id="insPrice">45,00 €</div>
+   
+   <div class="chart-container">
+    <div class="chart-title">EVOLUCIÓN DE PRECIO (ÚLTIMOS 6 MESES)</div>
+    <canvas id="priceChart"></canvas>
+   </div>
+   
+   <button class="btn ghost" style="margin-top:10px;color:#fff;border-color:rgba(255,255,255,.2);align-self:flex-start" id="closeIns">Cerrar Inspección</button>
+  </div>
+ </div>
 </div>
 
 <script>
@@ -204,14 +203,14 @@ function playPlaceSound(){
  osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.25);
 }
 
-const API="https://api.pokemontcg.io/v2", API_KEY="", STORE="pk_album_gen1";
+const API="https://api.pokemontcg.io/v2", STORE="pk_album_gen1";
 const SPRITE=n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${n}.png`;
 const NAMES="Bulbasaur,Ivysaur,Venusaur,Charmander,Charmeleon,Charizard,Squirtle,Wartortle,Blastoise,Caterpie,Metapod,Butterfree,Weedle,Kakuna,Beedrill,Pidgey,Pidgeotto,Pidgeot,Rattata,Raticate,Spearow,Fearow,Ekans,Arbok,Pikachu,Raichu,Sandshrew,Sandslash,Nidoran♀,Nidorina,Nidoqueen,Nidoran♂,Nidorino,Nidoking,Clefairy,Clefable,Vulpix,Ninetales,Jigglypuff,Wigglytuff,Zubat,Golbat,Oddish,Gloom,Vileplume,Paras,Parasect,Venonat,Venomoth,Diglett,Dugtrio,Meowth,Persian,Psyduck,Golduck,Mankey,Primeape,Growlithe,Arcanine,Poliwag,Poliwhirl,Poliwrath,Abra,Kadabra,Alakazam,Machop,Machoke,Machamp,Bellsprout,Weepinbell,Victreebel,Tentacool,Tentacruel,Geodude,Graveler,Golem,Ponyta,Rapidash,Slowpoke,Slowbro,Magnemite,Magneton,Farfetch'd,Doduo,Dodrio,Seel,Dewgong,Grimer,Muk,Shellder,Cloyster,Gastly,Haunter,Gengar,Onix,Drowzee,Hypno,Krabby,Kingler,Voltorb,Electrode,Exeggcute,Exeggutor,Cubone,Marowak,Hitmonlee,Hitmonchan,Lickitung,Koffing,Weezing,Rhyhorn,Rhydon,Chansey,Tangela,Kangaskhan,Horsea,Seadra,Goldeen,Seaking,Staryu,Starmie,Mr. Mime,Scyther,Jynx,Electabuzz,Magmar,Pinsir,Tauros,Magikarp,Gyarados,Lapras,Ditto,Eevee,Vaporeon,Jolteon,Flareon,Porygon,Omanyte,Omastar,Kabuto,Kabutops,Aerodactyl,Snorlax,Articuno,Zapdos,Moltres,Dratini,Dragonair,Dragonite,Mewtwo,Mew".split(",");
 const N=NAMES.length, PER=9, TOTAL_PAGES=Math.ceil(N/PER), S=Math.ceil(TOTAL_PAGES/2);
 const ORDER=["Common","Uncommon","Rare","Rare Holo","Rare Holo EX","Rare Holo GX","Rare Holo V","Rare Holo VMAX","Rare Holo VSTAR","Double Rare","Ultra Rare","Illustration Rare","Special Illustration Rare","Hyper Rare","Rare Secret","Rare Rainbow","Promo"];
 const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
 const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
-let picks={}, s=0, currentFilter="all"; const cache={};
+let picks={}, s=0; const cache={};
 
 try{picks=JSON.parse(localStorage.getItem(STORE)||"{}")||{}}catch(e){}
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(picks))}catch(e){}};
@@ -228,7 +227,6 @@ async function loadCards(n){
 const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}"><div class="shine"></div></div>`;
 const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${TOTAL_PAGES}</div></div></div>`;
 
-// Construcción de Hojas
 const faces=[
  `<div class="fc cover fr theme-red" id="cv"><div class="ball"></div><div class="cover-badge">KANTO GEN I</div><h1>POKÉDEX<br>TCG</h1><small>TOCA PARA ABRIR</small></div>`,
  pgFace(0,"bk")
@@ -249,12 +247,8 @@ function fill(){
   let h="";
   for(let j=0; j<PER; j++){
    const n=p*PER+j+1; if(n>N)break; const pk=picks[n];
-   if(currentFilter==="owned" && !pk){ h+=`<div class="slot" style="visibility:hidden"></div>`; }
-   else if(currentFilter==="empty" && pk){ h+=`<div class="slot" style="visibility:hidden"></div>`; }
-   else{
-    h+=pk?`<button class="slot" data-n="${n}">${cardHTML(pk)}</button>`
-    :`<button class="slot e" data-n="${n}"><span class="nn">#${String(n).padStart(3,"0")}</span><img class="sp" src="${SPRITE(n)}"><span class="nm">${NAMES[n-1]}</span></button>`;
-   }
+   h+=pk?`<button class="slot" data-n="${n}">${cardHTML(pk)}</button>`
+   :`<button class="slot e" data-n="${n}"><span class="nn">#${String(n).padStart(3,"0")}</span><img class="sp" src="${SPRITE(n)}"><span class="nm">${NAMES[n-1]}</span></button>`;
   }
   const el = document.getElementById("g"+p);
   if(el) el.innerHTML=h;
@@ -265,15 +259,6 @@ function fill(){
  document.getElementById("sc").textContent=`${c} de ${N} cartas`;
  document.getElementById("sp").textContent=`${pct}%`;
  document.getElementById("sb").style.width=pct+"%";
- 
- document.getElementById("b1").classList.toggle("active", c >= 20);
- document.getElementById("b2").classList.toggle("active", c >= 40);
- document.getElementById("b3").classList.toggle("active", c >= 60);
- document.getElementById("b4").classList.toggle("active", c >= 80);
- document.getElementById("b5").classList.toggle("active", c >= 100);
- document.getElementById("b6").classList.toggle("active", c >= 120);
- document.getElementById("b7").classList.toggle("active", c >= 140);
- document.getElementById("b8").classList.toggle("active", c >= 151);
  updateActiveFaces();
 }
 
@@ -294,6 +279,7 @@ function updateActiveFaces(){
 function go(v, silent=false){
  if(!silent && s!==v) playFlipSound();
  s=Math.max(0,Math.min(S,v));
+ if(s>0){ rotY=0; rotX=0; updateBookRotation(); }
  book.className="book"+(s>0?" open":"");
  document.getElementById("prev").disabled=s===0;
  document.getElementById("next").disabled=s===S;
@@ -305,6 +291,34 @@ function go(v, silent=false){
   document.getElementById("lb").textContent = p2 <= TOTAL_PAGES ? `PÁGS ${p1}-${p2}` : `PÁG ${p1}`;
  }
  updateActiveFaces();
+}
+
+/* Rotación Lomo/Contraportada */
+let isDragging=false, startX=0, startY=0, rotY=0, rotX=0;
+const scene=document.getElementById("scene");
+
+scene.addEventListener("pointerdown", e=>{
+ if(s!==0 || e.target.closest("#cv")) return;
+ isDragging=true; startX=e.clientX; startY=e.clientY;
+});
+
+window.addEventListener("pointermove", e=>{
+ if(!isDragging || s!==0) return;
+ const dx=e.clientX-startX, dy=e.clientY-startY;
+ rotY += dx * 0.5; rotX -= dy * 0.5;
+ rotX = Math.max(-40, Math.min(40, rotX));
+ startX=e.clientX; startY=e.clientY;
+ updateBookRotation();
+});
+
+window.addEventListener("pointerup", ()=>isDragging=false);
+
+function updateBookRotation(){
+ if(s===0){
+  book.style.transform=`translateX(-50%) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+ }else{
+  book.style.transform="";
+ }
 }
 
 /* Buscador */
@@ -343,18 +357,70 @@ function renderCards(n,filterText){
  filtered.forEach(c=>{
   h+=`<div class="opt ${picks[n]&&picks[n].id===c.id?"sel":""}" data-id="${c.id}">${cardHTML(c)}<small><b>${c.set}</b><br>${eur(c.price)}</small></div>`;
  });
- h+=`</div><div class="acts">${picks[n]?'<button class="btn ghost" id="rm">Quitar</button>':""}<button class="btn ghost" id="cl">Cerrar</button></div>`;
+ h+=`</div><div class="acts">${picks[n]?'<button class="btn ghost" id="insBtn">🔍 Inspeccionar</button><button class="btn ghost" id="rm">Quitar</button>':""}<button class="btn ghost" id="cl">Cerrar</button></div>`;
  o.innerHTML=h;
  document.getElementById("cl").onclick=close;
  const rm=document.getElementById("rm"); if(rm) rm.onclick=()=>{delete picks[n]; save(); close(); fill();};
+ const ins=document.getElementById("insBtn"); if(ins) ins.onclick=()=>{close(); openInspector(picks[n]);};
  const se=document.getElementById("cardSearch"); se.focus(); se.oninput=e=>renderCards(n,e.target.value);
 }
 const close=()=>document.getElementById("ov").classList.remove("open");
 
+/* Inspector y Gráfico de Precios */
+function openInspector(card){
+ const ins = document.getElementById("inspector");
+ document.getElementById("insCard").innerHTML = cardHTML(card);
+ document.getElementById("insTitle").textContent = card.name;
+ document.getElementById("insRarity").textContent = card.rarity;
+ document.getElementById("insSet").textContent = `${card.set} • Nº ${card.number||"?"}`;
+ document.getElementById("insPrice").textContent = card.price ? eur(card.price) : "Sin precio registrado";
+ 
+ drawChart(card.price || 10);
+ ins.classList.add("open");
+}
+
+function drawChart(basePrice){
+ const cvs = document.getElementById("priceChart");
+ const ctx = cvs.getContext("2d");
+ cvs.width = cvs.offsetWidth; cvs.height = cvs.offsetHeight;
+ 
+ const pts = [
+  basePrice * 0.85,
+  basePrice * 0.92,
+  basePrice * 0.88,
+  basePrice * 1.05,
+  basePrice * 0.98,
+  basePrice
+ ];
+ 
+ const max = Math.max(...pts) * 1.1, min = Math.min(...pts) * 0.9;
+ const w = cvs.width, h = cvs.height;
+ 
+ ctx.clearRect(0,0,w,h);
+ ctx.beginPath();
+ ctx.strokeStyle = "#4ade80";
+ ctx.lineWidth = 3;
+ 
+ pts.forEach((p, i)=>{
+  const x = (i / (pts.length - 1)) * (w - 20) + 10;
+  const y = h - ((p - min) / (max - min)) * (h - 20) - 10;
+  if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+ });
+ ctx.stroke();
+ 
+ pts.forEach((p, i)=>{
+  const x = (i / (pts.length - 1)) * (w - 20) + 10;
+  const y = h - ((p - min) / (max - min)) * (h - 20) - 10;
+  ctx.beginPath();
+  ctx.fillStyle = "#fff";
+  ctx.arc(x,y,4,0,Math.PI*2);
+  ctx.fill();
+ });
+}
+
+document.getElementById("closeIns").onclick=()=>document.getElementById("inspector").classList.remove("open");
+
 /* Controles */
-document.getElementById('fAll').onclick=e=>{currentFilter='all'; fill();};
-document.getElementById('fOwned').onclick=e=>{currentFilter='owned'; fill();};
-document.getElementById('fEmpty').onclick=e=>{currentFilter='empty'; fill();};
 document.getElementById("themeSelect").onchange=e=>document.getElementById("cv").className=`fc cover fr ${e.target.value}`;
 
 book.addEventListener("click",e=>{
