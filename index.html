@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Álbum Pokédex TCG 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+:root{--bg:#1a1614;--pp:#fbf7ec;--tx:#1c1b22;--mu:#6b6878;--ln:#d8d0bd;--ac:#d6372b;--px:"Press Start 2P",ui-monospace,monospace;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root{--pp:#2a2833;--tx:#f1eff6;--mu:#a09cb0;--ln:#3a3846;--ac:#ff5a4d;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:#141110;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* ===== Mesa y Tapete ===== */
+.playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#2c241d 0%,#120f0d 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
+.playmat{width:min(94vw,1100px);height:min(82vh,750px);background:#254a38;border-radius:24px;border:8px solid #1a3326;box-shadow:inset 0 0 60px rgba(0,0,0,.6),0 20px 50px rgba(0,0,0,.8);position:relative;display:flex;align-items:center;justify-content:center}
+.playmat::before{content:"";position:absolute;inset:12px;border:2px dashed rgba(255,255,255,.15);border-radius:16px;pointer-events:none}
+.playmat-logo{position:absolute;width:240px;height:240px;border-radius:50%;border:8px solid rgba(255,255,255,.05);background:radial-gradient(rgba(255,255,255,.03),transparent);pointer-events:none;display:flex;align-items:center;justify-content:center}
+.playmat-logo::after{content:"";width:80px;height:80px;border-radius:50%;border:6px solid rgba(255,255,255,.05)}
+
+/* ===== Escena 3D Centrada ===== */
+.scene{--pw:min(40vw,360px);perspective:2200px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%}
+.book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
+.book.open{transform:none}
+.book.end{transform:translateX(calc(var(--pw)*.5))}
+.sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:rotateY(0) translateZ(calc((var(--n) - var(--i))*2px))}
+.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*-2px))}
+.fc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;container-type:inline-size;background:var(--pp);overflow:hidden}
+.fr{border-radius:2px 10px 10px 2px;box-shadow:0 10px 30px rgba(0,0,0,.35),inset 8px 0 14px -8px rgba(0,0,0,.3)}
+.bk{transform:rotateY(180deg);border-radius:10px 2px 2px 10px;box-shadow:0 10px 30px rgba(0,0,0,.35),inset -8px 0 14px -8px rgba(0,0,0,.3)}
+.cover{background:linear-gradient(135deg,#c0392b,#80190f);border:3px solid #55100a;border-radius:4px 14px 14px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw;color:#f6d36b;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw}
+.cover small{font-size:4.4cqw;color:#f6d36bcc;animation:bl 1.4s steps(2) infinite}
+@keyframes bl{50%{opacity:.2}}
+.ball{width:42cqw;aspect-ratio:1;border-radius:50%;border:1.6cqw solid #1b1b1b;background:linear-gradient(#e63b2e 0 45%,#1b1b1b 45% 55%,#fff 55%);position:relative;box-shadow:0 0 0 1.2cqw #f6d36b}
+.ball::after{content:"";position:absolute;inset:50% auto auto 50%;width:12cqw;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:1.6cqw solid #1b1b1b}
+.pgi{position:absolute;inset:0;padding:5cqw;display:flex;flex-direction:column}
+.g{display:grid;grid-template-columns:repeat(3,1fr);gap:3cqw}
+.ft{margin-top:auto;text-align:center;font-family:var(--px);font-size:3.4cqw;color:var(--mu)}
+.st h2{font-family:var(--px);font-size:5.5cqw;margin:6cqw 0 4cqw;text-align:center}
+.big{font-family:var(--px);font-size:7cqw;text-align:center;color:var(--ac)}
+.st #sc{text-align:center;font-size:4.4cqw;color:var(--mu);margin:3cqw 0}
+.bar{height:3cqw;background:var(--ln);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .6s}
+.st p{font-size:3.8cqw;color:var(--mu);text-align:center;margin-top:6cqw;line-height:1.5}
+
+/* ===== Huecos y Sprites Pixel Art ===== */
+.slot{aspect-ratio:5/7;border-radius:8px;border:0;padding:0;cursor:pointer;background:none;font-family:inherit;container-type:inline-size;display:block;width:100%;position:relative}
+.slot.e{background:#cadba0;border:2px solid #306230;color:#0f380f;font-family:var(--px);display:flex;flex-direction:column;align-items:center;padding:6cqw 5cqw;border-radius:6px;transition:transform .15s,filter .15s}
+.slot.e:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.slot .nn{font-size:9cqw;align-self:flex-start}
+.slot img.sp{width:82cqw;flex:1;min-height:0;object-fit:contain;image-rendering:pixelated}
+.slot .nm{font-size:8cqw;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.show .slot{animation:pop .45s both;animation-delay:calc(var(--j)*70ms + .45s)}
+@keyframes pop{from{opacity:0;transform:scale(.7) translateY(10px)}}
+
+/* ===== Cartas y Animación de Colocación ===== */
+.card{position:relative;width:100%;aspect-ratio:5/7;border-radius:4.5%;overflow:hidden;transition:transform .15s;background:#0002}
+.card img{width:100%;height:100%;display:block;object-fit:cover}
+.shine{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 15%,rgba(255,0,128,.5),rgba(0,255,220,.5),rgba(255,230,0,.5),transparent 85%);background-size:250% 250%;background-position:var(--mx,30%) var(--my,30%);mix-blend-mode:soft-light}
+.holo .shine{opacity:.5}.holo.on .shine{opacity:1}
+
+/* Animación de entrada de la carta */
+.slot.just-placed .card{animation:placeCard .6s cubic-bezier(.175,.885,.32,1.275) forwards}
+@keyframes placeCard{
+ 0%{transform:scale(1.4) translateY(-30px) rotate(-6deg);opacity:0;box-shadow:0 30px 40px rgba(0,0,0,.5)}
+ 70%{transform:scale(0.95) translateY(2px) rotate(1deg);opacity:1}
+ 100%{transform:scale(1) translateY(0) rotate(0deg);box-shadow:none}
+}
+
+/* ===== Interfaz de Navegación ===== */
+.nav{display:flex;justify-content:center;align-items:center;gap:16px;padding:12px;font-family:var(--px);font-size:10px;color:#d8d0bd;z-index:10}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.btn:hover{filter:brightness(1.1)}.btn:disabled{opacity:.3;cursor:default}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--ln);box-shadow:none}
+
+/* ===== Panel Emergente / Selector ===== */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.ov.open{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:650px;max-height:85vh;overflow:auto;border-radius:20px 20px 0 0;padding:20px;border-t:2px solid var(--ln)}
+.sheet h2{margin:0 0 4px;font-size:20px;color:var(--tx)}
+.sheet h3{font-size:12px;margin:18px 0 10px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--ln);padding-bottom:4px}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.opt{cursor:pointer;font-size:11px;color:var(--mu);text-align:center;transition:transform .15s}
+.opt:hover{transform:translateY(-4px)}
+.opt small{display:block;margin-top:6px;line-height:1.3}
+.opt.sel .card{outline:4px solid var(--ac);outline-offset:2px;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+.acts{display:flex;gap:10px;margin-top:20px}
+.msg{padding:30px 0;text-align:center;color:var(--mu);font-size:14px}
+</style></head><body>
+
+<!-- Fondo Mesa y Tapete -->
+<div class="playmat-table"><div class="playmat"><div class="playmat-logo"></div></div></div>
+
+<div class="scene"><div class="book" id="book"></div></div>
+<div class="nav"><button class="btn" id="prev">‹ Anterior</button><span id="lb"></span><button class="btn" id="next">Siguiente ›</button></div>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+
+<script>
+/* ===== Configuración ===== */
+const API="https://api.pokemontcg.io/v2";
+const API_KEY="";   // opcional: clave gratuita de dev.pokemontcg.io
+const SPRITE=n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${n}.png`;
+const STORE="pk_album_gen1";
+
+/* ===== Lista Gen 1 ===== */
+const NAMES="Bulbasaur,Ivysaur,Venusaur,Charmander,Charmeleon,Charizard,Squirtle,Wartortle,Blastoise,Caterpie,Metapod,Butterfree,Weedle,Kakuna,Beedrill,Pidgey,Pidgeotto,Pidgeot,Rattata,Raticate,Spearow,Fearow,Ekans,Arbok,Pikachu,Raichu,Sandshrew,Sandslash,Nidoran♀,Nidorina,Nidoqueen,Nidoran♂,Nidorino,Nidoking,Clefairy,Clefable,Vulpix,Ninetales,Jigglypuff,Wigglytuff,Zubat,Golbat,Oddish,Gloom,Vileplume,Paras,Parasect,Venonat,Venomoth,Diglett,Dugtrio,Meowth,Persian,Psyduck,Golduck,Mankey,Primeape,Growlithe,Arcanine,Poliwag,Poliwhirl,Poliwrath,Abra,Kadabra,Alakazam,Machop,Machoke,Machamp,Bellsprout,Weepinbell,Victreebel,Tentacool,Tentacruel,Geodude,Graveler,Golem,Ponyta,Rapidash,Slowpoke,Slowbro,Magnemite,Magneton,Farfetch'd,Doduo,Dodrio,Seel,Dewgong,Grimer,Muk,Shellder,Cloyster,Gastly,Haunter,Gengar,Onix,Drowzee,Hypno,Krabby,Kingler,Voltorb,Electrode,Exeggcute,Exeggutor,Cubone,Marowak,Hitmonlee,Hitmonchan,Lickitung,Koffing,Weezing,Rhyhorn,Rhydon,Chansey,Tangela,Kangaskhan,Horsea,Seadra,Goldeen,Seaking,Staryu,Starmie,Mr. Mime,Scyther,Jynx,Electabuzz,Magmar,Pinsir,Tauros,Magikarp,Gyarados,Lapras,Ditto,Eevee,Vaporeon,Jolteon,Flareon,Porygon,Omanyte,Omastar,Kabuto,Kabutops,Aerodactyl,Snorlax,Articuno,Zapdos,Moltres,Dratini,Dragonair,Dragonite,Mewtwo,Mew".split(",");
+const N=NAMES.length,PER=9,PAGES=Math.ceil(N/PER),S=Math.ceil((PAGES+3)/2);
+const ORDER=["Common","Uncommon","Rare","Rare Holo","Rare Holo EX","Rare Holo GX","Rare Holo V","Rare Holo VMAX","Rare Holo VSTAR","Double Rare","Ultra Rare","Illustration Rare","Special Illustration Rare","Hyper Rare","Rare Secret","Rare Rainbow","Promo"];
+const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
+const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
+let picks={},s=0;const cache={};
+
+try{picks=JSON.parse(localStorage.getItem(STORE)||"{}")||{}}catch(e){}
+const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(picks))}catch(e){}};
+
+/* ===== Cargar Cartas de la API ===== */
+async function loadCards(n){
+ if(cache[n])return cache[n];let all=[],pg=1,total=1;
+ while(all.length<total&&pg<=4){
+  const u=`${API}/cards?q=${encodeURIComponent("nationalPokedexNumbers:"+n)}&pageSize=250&page=${pg}&select=id,name,rarity,images,set,number,cardmarket`;
+  const r=await fetch(u,API_KEY?{headers:{"X-Api-Key":API_KEY}}:undefined);
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json();total=j.totalCount;all=all.concat(j.data);pg++}
+ return cache[n]=all.map(c=>{const p=c.cardmarket&&c.cardmarket.prices;
+  return{id:c.id,name:c.name,rarity:c.rarity||"Sin rareza",img:c.images.small,set:c.set.name,price:+((p&&(p.trendPrice??p.averageSellPrice))||0)}})}
+
+/* ===== Estructura del Libro 3D ===== */
+const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}" loading="lazy"><div class="shine"></div></div>`;
+const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${PAGES}</div></div></div>`;
+const faces=[
+ `<div class="fc cover fr" id="cv"><div class="ball"></div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
+ `<div class="fc bk st"><div class="pgi"><h2>MI COLECCIÓN</h2><div class="big" id="sv">0,00 €</div><div id="sc">0 de 151 cartas</div><div class="bar"><i id="sb"></i></div><p>Haz clic en cualquier casilla con sprite para ver todas sus cartas reales de la API de Pokémon TCG y añadirla a tu álbum.</p></div></div>`];
+for(let p=0;p<PAGES;p++)faces.push(pgFace(p,(p%2===0)?"fr":"bk"));
+while(faces.length<2*S)faces.push(`<div class="fc bk st"><div class="pgi"><h2>FIN</h2><p>Primera generación completada.</p></div></div>`);
+
+const book=document.getElementById("book");
+book.innerHTML=Array.from({length:S},(_,i)=>`<div class="sh" style="--i:${i};--n:${S}">${faces[2*i]}${faces[2*i+1]}</div>`).join("");
+const sh=[...book.children],fcs=[...book.querySelectorAll(".fc")];
+
+function fill(animNum=null){
+ for(let p=0;p<PAGES;p++){let h="";
+  for(let j=0;j<PER;j++){const n=p*PER+j+1;if(n>N)break;const pk=picks[n];
+   const isJustPlaced = animNum === n ? "just-placed" : "";
+   h+=pk?`<button class="slot ${isJustPlaced}" style="--j:${j}" data-n="${n}">${cardHTML(pk)}</button>`
+   :`<button class="slot e" style="--j:${j}" data-n="${n}"><span class="nn">#${String(n).padStart(3,"0")}</span><img class="sp" src="${SPRITE(n)}" alt="${NAMES[n-1]}" loading="lazy"><span class="nm">${NAMES[n-1]}</span></button>`}
+  document.getElementById("g"+p).innerHTML=h}
+ let t=0,c=0;for(const n in picks){t+=picks[n].price;c++}
+ document.getElementById("sv").textContent=eur(t);
+ document.getElementById("sc").textContent=`${c} de ${N} cartas`;
+ document.getElementById("sb").style.width=(c/N*100)+"%";show()}
+
+const show=()=>fcs.forEach((f,i)=>f.classList.toggle("show",i===2*s-1||i===2*s));
+function go(v){s=Math.max(0,Math.min(S,v));
+ sh.forEach((e,i)=>e.classList.toggle("f",i<s));
+ book.className="book"+(s===S?" end":s>0?" open":"");
+ document.getElementById("prev").disabled=s===0;document.getElementById("next").disabled=s===S;
+ document.getElementById("lb").textContent=s===0?"PORTADA":s===S?"FIN":`HOJA ${s}/${S-1}`;show()}
+
+/* ===== Selector de Carta desde la API ===== */
+async function openPoke(n){
+ const o=document.getElementById("sheet");
+ o.dataset.n=n;o.innerHTML=`<h2>#${n} ${NAMES[n-1]}</h2><div class="msg">Buscando cartas en la API de Pokémon TCG...</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>`;
+ document.getElementById("ov").classList.add("open");document.getElementById("cl").onclick=close;
+ let cs;try{cs=await loadCards(n)}catch(e){
+  o.innerHTML=`<h2>#${n} ${NAMES[n-1]}</h2><div class="msg">Error al conectar con la API (${e.message}). Reinténtalo.</div><div class="acts"><button class="btn" id="rt">Reintentar</button><button class="btn ghost" id="cl">Cerrar</button></div>`;
+  document.getElementById("rt").onclick=()=>openPoke(n);document.getElementById("cl").onclick=close;return}
+ const rk=r=>{const i=ORDER.indexOf(r);return i<0?99:i};
+ const gr={};cs.forEach(c=>(gr[c.rarity]=gr[c.rarity]||[]).push(c));
+ let h=`<h2>#${n} ${NAMES[n-1]}</h2><div style="font-size:13px;color:var(--mu)">Se han encontrado ${cs.length} cartas. Elige la que quieres colocar:</div>`;
+ Object.keys(gr).sort((a,b)=>rk(a)-rk(b)||a.localeCompare(b)).forEach(r=>{
+  h+=`<h3>${r} (${gr[r].length})</h3><div class="cg">`+gr[r].map(c=>`<div class="opt ${picks[n]&&picks[n].id===c.id?"sel":""}" data-id="${c.id}">${cardHTML(c)}<small><b>${c.set}</b><br>${c.price?eur(c.price):"Sin precio"}</small></div>`).join("")+`</div>`});
+ h+=`<div class="acts">${picks[n]?'<button class="btn ghost" id="rm">Quitar carta</button>':""}<button class="btn ghost" id="cl">Cerrar</button></div>`;
+ o.innerHTML=h;document.getElementById("cl").onclick=close;
+ const rm=document.getElementById("rm");if(rm)rm.onclick=()=>{delete picks[n];save();close();fill()}}
+
+const close=()=>document.getElementById("ov").classList.remove("open");
+
+/* Eventos */
+book.addEventListener("click",e=>{if(e.target.closest("#cv")){go(1);return}const b=e.target.closest(".slot");if(b)openPoke(+b.dataset.n)});
+document.getElementById("sheet").addEventListener("click",e=>{const op=e.target.closest(".opt");if(!op)return;
+ const n=+document.getElementById("sheet").dataset.n,c=cache[n].find(x=>x.id===op.dataset.id);
+ if(c){picks[n]=c;save();close();fill(n)}});
+document.getElementById("ov").addEventListener("click",e=>{if(e.target.id==="ov")close()});
+document.getElementById("prev").onclick=()=>go(s-1);
+document.getElementById("next").onclick=()=>go(s+1);
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
+
+/* Efecto Holográfico 3D con el Ratón */
+document.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".card.holo");if(!c)return;
+ const b=c.getBoundingClientRect(),x=(e.clientX-b.left)/b.width,y=(e.clientY-b.top)/b.height;
+ c.style.setProperty("--mx",x*100+"%");c.style.setProperty("--my",y*100+"%");
+ c.style.transform=`perspective(600px) rotateY(${(x-.5)*16}deg) rotateX(${(.5-y)*16}deg)`;c.classList.add("on")});
+document.addEventListener("pointerout",e=>{const c=e.target.closest&&e.target.closest(".card.holo");
+ if(c&&!c.contains(e.relatedTarget)){c.style.transform="";c.classList.remove("on")}});
+
+fill();go(0);
+</script></body></html>
