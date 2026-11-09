@@ -4,46 +4,56 @@
 <title>Álbum Pokédex TCG 3D</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 <style>
-:root{--bg:#121214;--pp:#fbf7ec;--tx:#1c1b22;--mu:#6b6878;--ln:#d8d0bd;--ac:#d6372b;--px:"Press Start 2P",ui-monospace,monospace;box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root{--pp:#25232c;--tx:#f1eff6;--mu:#a09cb0;--ln:#3a3846;--ac:#ff5a4d;color-scheme:dark}}
+:root{--bg:#0e0e11;--pp:#fbf7ec;--tx:#1c1b22;--mu:#6b6878;--ln:#d8d0bd;--ac:#d6372b;--px:"Press Start 2P",ui-monospace,monospace;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root{--pp:#22202a;--tx:#f1eff6;--mu:#a09cb0;--ln:#3a3846;--ac:#ff5a4d;color-scheme:dark}}
 *{box-sizing:border-box}
-body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}
 
-/* ===== Tapete Negro ===== */
-.playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#1a1a20 0%,#050507 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
-.playmat{width:min(96vw,1280px);height:min(86vh,840px);background:#141418;border-radius:24px;border:8px solid #0d0d10;box-shadow:inset 0 0 80px rgba(0,0,0,.9),0 20px 50px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
-.playmat::before{content:"";position:absolute;inset:14px;border:2px dashed rgba(255,255,255,.08);border-radius:16px;pointer-events:none}
-.playmat-logo{position:absolute;width:280px;height:280px;border-radius:50%;border:8px solid rgba(255,255,255,.03);background:radial-gradient(rgba(255,255,255,.02),transparent);pointer-events:none;display:flex;align-items:center;justify-content:center}
-.playmat-logo::after{content:"";width:90px;height:90px;border-radius:50%;border:6px solid rgba(255,255,255,.03)}
+/* ===== Mesa y Tapete Negro ===== */
+.playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#181820 0%,#040406 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
+.playmat{width:min(96vw,1300px);height:min(88vh,860px);background:#121216;border-radius:28px;border:8px solid #0a0a0d;box-shadow:inset 0 0 90px rgba(0,0,0,.95),0 25px 60px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
+.playmat::before{content:"";position:absolute;inset:16px;border:2px dashed rgba(255,255,255,.06);border-radius:20px;pointer-events:none}
+.playmat-logo{position:absolute;width:300px;height:300px;border-radius:50%;border:8px solid rgba(255,255,255,.02);background:radial-gradient(rgba(255,255,255,.015),transparent);pointer-events:none;display:flex;align-items:center;justify-content:center}
+.playmat-logo::after{content:"";width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.02)}
 
 /* ===== HUD Lateral ===== */
-.hud-panel{position:fixed;top:20px;left:20px;background:rgba(20,20,24,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 20px;color:#fff;z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:230px}
-.hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:240px}
+.hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.hud-led{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
 .hud-val{font-family:var(--px);font-size:18px;color:#4ade80;margin-bottom:8px}
 .hud-sub{font-size:12px;color:#a09cb0;margin-bottom:8px}
-.hud-bar{height:8px;background:#2a2833;border-radius:6px;overflow:hidden;margin-bottom:12px}.hud-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5a4d,#4ade80);transition:width .6s}
-.hud-section{font-size:11px;color:var(--mu);margin:10px 0 4px;font-family:var(--px)}
-.hud-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
-.hud-btn{background:#2a2833;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px;font-size:10px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;text-align:center}
-.hud-btn:hover{background:#3a3846;color:#fff}
-.hud-select{width:100%;background:#2a2833;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px;font-size:11px;font-family:inherit;outline:none}
+.hud-bar{height:8px;background:#2a2833;border-radius:6px;overflow:hidden;margin-bottom:14px}.hud-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5a4d,#4ade80);transition:width .6s}
+.hud-section{font-size:10px;color:var(--mu);margin:10px 0 6px;font-family:var(--px);text-transform:uppercase}
+.hud-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.hud-btn{background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 8px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center}
+.hud-btn:hover{background:#3a3846;color:#fff;border-color:var(--ac)}
+.hud-btn.primary{background:linear-gradient(135deg,#d6372b,#a02016);color:#fff;font-family:var(--px);font-size:9px;grid-column:span 2;padding:9px;border:none;box-shadow:0 4px 12px rgba(214,55,43,.4)}
+.hud-btn.primary:hover{filter:brightness(1.15)}
+.hud-select{width:100%;background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none}
 
-/* ===== Escena 3D y Ajustes de Capas ===== */
+/* ===== Barra de Filtros de Vista ===== */
+.filter-bar{display:flex;gap:8px;margin-bottom:10px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
+.filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px;border-radius:7px;font-size:10px;font-family:var(--px);cursor:pointer;transition:all .2s}
+.filter-btn.active{background:var(--ac);color:#fff}
+
+/* ===== Escena 3D Corrección de Capas ===== */
 .scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%}
 .book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
 .book.open{transform:none}
 .book.end{transform:translateX(calc(var(--pw)*.5))}
 
 .sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);pointer-events:none}
-.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*2px))}
-.sh:not(.f){transform:rotateY(0deg) translateZ(calc((var(--n) - var(--i))*2px))}
+.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*1px))}
+.sh:not(.f){transform:rotateY(0deg) translateZ(calc((var(--n) - var(--i))*1px))}
 
-.fc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;container-type:inline-size;background:var(--pp);overflow:hidden;pointer-events:none}
+.fc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;container-type:inline-size;background:var(--pp);overflow:hidden;pointer-events:none!important}
 .fr{border-radius:2px 10px 10px 2px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset 8px 0 14px -8px rgba(0,0,0,.4)}
 .bk{transform:rotateY(180deg);border-radius:10px 2px 2px 10px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset -8px 0 14px -8px rgba(0,0,0,.4)}
 
-/* Habilitar interacción solo en caras activas */
-.sh.active-left .bk, .sh.active-right .fr{pointer-events:auto!important}
+/* Activación Estricta de Clics */
+.sh.active-left .bk{pointer-events:auto!important}
+.sh.active-right .fr{pointer-events:auto!important}
+.sh.active-left .bk *, .sh.active-right .fr *{pointer-events:auto!important}
 
 /* Estilos de Portadas */
 .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw;pointer-events:auto!important;transition:background .3s}
@@ -52,13 +62,10 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 
 .theme-red{background:linear-gradient(135deg,#c0392b,#80190f);border:3px solid #55100a;color:#f6d36b}
 .theme-red .ball{border-color:#1b1b1b;background:linear-gradient(#e63b2e 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f6d36b}
-
 .theme-ultra{background:linear-gradient(135deg,#2c3e50,#1a252f);border:3px solid #0f171e;color:#f1c40f}
 .theme-ultra .ball{border-color:#1b1b1b;background:linear-gradient(#f39c12 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f1c40f}
-
 .theme-master{background:linear-gradient(135deg,#8e44ad,#5b2c6f);border:3px solid #3b1849;color:#e84393}
 .theme-master .ball{border-color:#1b1b1b;background:linear-gradient(#9b59b6 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #e84393}
-
 .theme-leather{background:linear-gradient(135deg,#3d2314,#24140b);border:3px solid #140b06;color:#d4af37}
 .theme-leather .ball{border-color:#1b1b1b;background:linear-gradient(#d4af37 0 45%,#1b1b1b 45% 55%,#222 55%);box-shadow:0 0 0 1.2cqw #d4af37}
 
@@ -69,7 +76,7 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .ft{margin-top:auto;text-align:center;font-family:var(--px);font-size:3cqw;color:var(--mu)}
 
 /* ===== Huecos y Sprites Pixel Art ===== */
-.slot{aspect-ratio:5/7;border-radius:8px;border:0;padding:0;cursor:pointer;background:none;font-family:inherit;container-type:inline-size;display:block;width:100%;position:relative;pointer-events:auto}
+.slot{aspect-ratio:5/7;border-radius:8px;border:0;padding:0;cursor:pointer;background:none;font-family:inherit;container-type:inline-size;display:block;width:100%;position:relative}
 .slot.e{background:#cadba0;border:2px solid #306230;color:#0f380f;font-family:var(--px);display:flex;flex-direction:column;align-items:center;padding:5cqw 4cqw;border-radius:6px;transition:transform .15s,filter .15s}
 .slot.e:hover{transform:translateY(-3px);filter:brightness(1.08)}
 .slot .nn{font-size:8.5cqw;align-self:flex-start}
@@ -97,8 +104,8 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .btn:hover{filter:brightness(1.1)}.btn:disabled{opacity:.3;cursor:default}
 .btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--ln);box-shadow:none}
 
-/* ===== Modal y Buscador ===== */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;z-index:50}
+/* ===== Modales ===== */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;z-index:50}
 .ov.open{display:flex}
 .sheet{background:var(--bg);width:100%;max-width:720px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:24px;border-top:1px solid rgba(255,255,255,.1)}
 .sheet-header{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;position:sticky;top:-24px;background:var(--bg);padding-top:4px;z-index:10;border-bottom:1px solid var(--ln);padding-bottom:12px}
@@ -114,6 +121,11 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .acts{display:flex;gap:10px;margin-top:20px}
 .msg{padding:30px 0;text-align:center;color:var(--mu);font-size:14px}
 
+/* ===== Minijuego Sobres TCG ===== */
+.booster-pack-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 0}
+.booster-pack{width:180px;height:280px;background:linear-gradient(135deg,#f39c12,#e67e22);border-radius:12px;border:4px solid #f1c40f;box-shadow:0 15px 35px rgba(243,156,18,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:var(--px);font-size:12px;text-align:center;cursor:pointer;transition:transform .3s}
+.booster-pack:hover{transform:scale(1.05) rotate(2deg)}
+
 /* ===== Inspector 3D ===== */
 .inspector-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column}
 .inspector-overlay.open{display:flex}
@@ -128,10 +140,18 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 
 <!-- HUD Balance y Utilidades -->
 <div class="hud-panel">
- <div class="hud-title">Colección TCG</div>
+ <div class="hud-title"><span>Colección TCG</span><div class="hud-led"></div></div>
  <div class="hud-val" id="sv">0,00 €</div>
  <div class="hud-sub" id="sc">0 de 151 cartas</div>
  <div class="hud-bar"><i id="sb"></i></div>
+ 
+ <div class="filter-bar">
+  <button class="filter-btn active" id="fAll">Todas</button>
+  <button class="filter-btn" id="fOwned">Tengo</button>
+  <button class="filter-btn" id="fEmpty">Falta</button>
+ </div>
+ 
+ <button class="hud-btn primary" id="openBoosterBtn">🎁 ABRIR SOBRE DIARIO</button>
  
  <div class="hud-section">Gestión</div>
  <div class="hud-actions">
@@ -163,7 +183,7 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 </div>
 
 <script>
-/* ===== Sonidos Web Audio API ===== */
+/* ===== Audio Web Audio API ===== */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 function initAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); }
@@ -215,9 +235,8 @@ const N=NAMES.length,PER=9,PAGES=Math.ceil(N/PER),S=Math.ceil((PAGES+3)/2);
 const ORDER=["Common","Uncommon","Rare","Rare Holo","Rare Holo EX","Rare Holo GX","Rare Holo V","Rare Holo VMAX","Rare Holo VSTAR","Double Rare","Ultra Rare","Illustration Rare","Special Illustration Rare","Hyper Rare","Rare Secret","Rare Rainbow","Promo"];
 const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
 const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
-let picks={},s=0;const cache={};
+let picks={},s=0,currentFilter="all";const cache={};
 
-// Cargar desde URL o LocalStorage
 const urlParams = new URLSearchParams(window.location.search);
 const sharedData = urlParams.get("col");
 if(sharedData){
@@ -255,8 +274,16 @@ function fill(animNum=null){
  for(let p=0;p<PAGES;p++){let h="";
   for(let j=0;j<PER;j++){const n=p*PER+j+1;if(n>N)break;const pk=picks[n];
    const isJustPlaced = animNum === n ? "just-placed" : "";
-   h+=pk?`<button class="slot ${isJustPlaced}" style="--j:${j}" data-n="${n}">${cardHTML(pk)}</button>`
-   :`<button class="slot e" style="--j:${j}" data-n="${n}"><span class="nn">#${String(n).padStart(3,"0")}</span><img class="sp" src="${SPRITE(n)}" alt="${NAMES[n-1]}" loading="lazy"><span class="nm">${NAMES[n-1]}</span></button>`}
+   
+   if(currentFilter==="owned" && !pk){
+    h+=`<div class="slot" style="visibility:hidden"></div>`;
+   }else if(currentFilter==="empty" && pk){
+    h+=`<div class="slot" style="visibility:hidden"></div>`;
+   }else{
+    h+=pk?`<button class="slot ${isJustPlaced}" style="--j:${j}" data-n="${n}">${cardHTML(pk)}</button>`
+    :`<button class="slot e" style="--j:${j}" data-n="${n}"><span class="nn">#${String(n).padStart(3,"0")}</span><img class="sp" src="${SPRITE(n)}" alt="${NAMES[n-1]}" loading="lazy"><span class="nm">${NAMES[n-1]}</span></button>`;
+   }
+  }
   document.getElementById("g"+p).innerHTML=h}
  let t=0,c=0;for(const n in picks){t+=picks[n].price;c++}
  document.getElementById("sv").textContent=eur(t);
@@ -280,7 +307,7 @@ function go(v, silent=false){
  updateActiveFaces();
 }
 
-/* ===== Modal de Búsqueda ===== */
+/* ===== Modal y Buscador ===== */
 let currentCards=[];
 async function openPoke(n){
  const o=document.getElementById("sheet");
@@ -341,6 +368,51 @@ function openInspector(card){
 }
 document.getElementById("closeIns").onclick=()=>document.getElementById("inspector").classList.remove("open");
 
+/* ===== Minijuego Abrir Sobre ===== */
+document.getElementById("openBoosterBtn").onclick=async ()=>{
+ const o=document.getElementById("sheet");
+ o.innerHTML=`<div class="sheet-header"><h2>🎁 SOBRE DE REGALO TCG</h2></div><div class="msg">Generando sobre con 5 cartas aleatorias...</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>`;
+ document.getElementById("ov").classList.add("open");document.getElementById("cl").onclick=close;
+ 
+ const randomNums = Array.from({length:5},()=>Math.floor(Math.random()*N)+1);
+ const pulledCards = [];
+ for(let num of randomNums){
+  try{
+   const cards = await loadCards(num);
+   if(cards.length) pulledCards.push({num, card: cards[Math.floor(Math.random()*cards.length)]});
+  }catch(e){}
+ }
+ 
+ let h=`<div class="sheet-header"><h2>🎁 ¡SOBRE DE SOBRES OBTENIDO!</h2></div>
+ <div style="font-size:13px;color:var(--mu);margin-bottom:12px">Toca "Guardar" en cualquier carta para colocarla automáticamente en tu álbum:</div>
+ <div class="cg">`;
+ pulledCards.forEach(item=>{
+  h+=`<div class="opt" data-n="${item.num}" data-id="${item.card.id}">${cardHTML(item.card)}<small><b>#${item.num} ${NAMES[item.num-1]}</b><br>${item.card.set}<br><button class="btn" style="margin-top:6px;padding:4px 8px;font-size:10px">Guardar</button></small></div>`;
+ });
+ h+=`</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>`;
+ o.innerHTML=h;
+ document.getElementById("cl").onclick=close;
+ 
+ o.querySelectorAll(".opt").forEach(opt=>{
+  opt.onclick=()=>{
+   const num = +opt.dataset.n;
+   const c = pulledCards.find(x=>x.card.id===opt.dataset.id).card;
+   picks[num] = c; playPlaceSound(); save(); close(); fill(num);
+  };
+ });
+};
+
+/* ===== Filtros de Vista ===== */
+const setFilter=(f, btn)=>{
+ currentFilter = f;
+ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ fill();
+};
+document.getElementById('fAll').onclick=e=>setFilter('all',e.target);
+document.getElementById('fOwned').onclick=e=>setFilter('owned',e.target);
+document.getElementById('fEmpty').onclick=e=>setFilter('empty',e.target);
+
 /* ===== Herramientas del HUD ===== */
 document.getElementById("exportBtn").onclick=()=>{
  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(picks, null, 2));
@@ -390,21 +462,20 @@ document.getElementById("refreshPricesBtn").onclick=async ()=>{
  alert("¡Precios actualizados con éxito!");
 };
 
-// Cambiar Portada / Tema
 document.getElementById("themeSelect").onchange=e=>{
  const cover = document.getElementById("cv");
  cover.className = `fc cover fr ${e.target.value}`;
 };
 
-/* ===== Eventos de la Interfaz ===== */
+/* ===== Eventos de Interacción ===== */
 book.addEventListener("click",e=>{
  if(e.target.closest("#cv")){go(1);return}
  const b=e.target.closest(".slot");
- if(b) openPoke(+b.dataset.n);
+ if(b && b.dataset.n) openPoke(+b.dataset.n);
 });
 
-document.getElementById("sheet").addEventListener("click",e=>{const op=e.target.closest(".opt");if(!op)return;
- const n=+document.getElementById("sheet").dataset.n,c=cache[n].find(x=>x.id===op.dataset.id);
+document.getElementById("sheet").addEventListener("click",e=>{const op=e.target.closest(".opt");if(!op || !op.dataset.id)return;
+ const n=+document.getElementById("sheet").dataset.n,c=cache[n]&&cache[n].find(x=>x.id===op.dataset.id);
  if(c){picks[n]=c;playPlaceSound();save();close();fill(n)}});
 
 document.getElementById("ov").addEventListener("click",e=>{if(e.target.id==="ov")close()});
@@ -412,7 +483,7 @@ document.getElementById("prev").onclick=()=>go(s-1);
 document.getElementById("next").onclick=()=>go(s+1);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
 
-/* ===== Brillo Holográfico (Ratón + Sensor Giroscopio Móvil) ===== */
+/* ===== Efectos Holográficos 3D (Ratón y Móvil) ===== */
 function setHoloTransform(card, x, y){
  card.style.setProperty("--mx", x*100+"%");
  card.style.setProperty("--my", y*100+"%");
