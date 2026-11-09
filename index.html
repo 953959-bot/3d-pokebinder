@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}
 
-/* ===== Mesa y Tapete Negro ===== */
+/* ===== Mesa y Tapete ===== */
 .playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#181820 0%,#040406 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
 .playmat{width:min(96vw,1300px);height:min(88vh,860px);background:#121216;border-radius:28px;border:8px solid #0a0a0d;box-shadow:inset 0 0 90px rgba(0,0,0,.95),0 25px 60px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
 .playmat::before{content:"";position:absolute;inset:16px;border:2px dashed rgba(255,255,255,.06);border-radius:20px;pointer-events:none}
@@ -17,7 +17,7 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .playmat-logo::after{content:"";width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.02)}
 
 /* ===== HUD Lateral ===== */
-.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:240px}
+.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:250px}
 .hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .hud-led{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
 .hud-val{font-family:var(--px);font-size:18px;color:#4ade80;margin-bottom:8px}
@@ -27,16 +27,21 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .hud-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
 .hud-btn{background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 8px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s;text-align:center}
 .hud-btn:hover{background:#3a3846;color:#fff;border-color:var(--ac)}
-.hud-btn.primary{background:linear-gradient(135deg,#d6372b,#a02016);color:#fff;font-family:var(--px);font-size:9px;grid-column:span 2;padding:9px;border:none;box-shadow:0 4px 12px rgba(214,55,43,.4)}
-.hud-btn.primary:hover{filter:brightness(1.15)}
-.hud-select{width:100%;background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none}
+.hud-select, .hud-input{width:100%;background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;font-size:12px;font-family:inherit;outline:none;margin-bottom:6px}
+.hud-input:focus{border-color:var(--ac);color:#fff}
 
-/* ===== Filtros ===== */
-.filter-bar{display:flex;gap:8px;margin-bottom:10px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
+/* Dropdown de Búsqueda */
+.search-results{background:#1b1922;border:1px solid rgba(255,255,255,.15);border-radius:8px;max-height:160px;overflow-y:auto;display:none;margin-bottom:8px}
+.search-results.open{display:block}
+.search-item{padding:8px 12px;font-size:11px;color:#d8d0bd;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05)}
+.search-item:hover{background:var(--ac);color:#fff}
+
+/* Filtros */
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
 .filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px;border-radius:7px;font-size:10px;font-family:var(--px);cursor:pointer;transition:all .2s}
 .filter-btn.active{background:var(--ac);color:#fff}
 
-/* ===== Escena 3D & 360° Rotación ===== */
+/* ===== Escena 3D & Estructura ===== */
 .scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%;cursor:grab}
 .scene:active{cursor:grabbing}
 .book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
@@ -44,15 +49,15 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .book.end{transform:translateX(calc(var(--pw)*.5))!important}
 
 .sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);pointer-events:none}
-.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*1px))}
-.sh:not(.f){transform:rotateY(0deg) translateZ(calc((var(--n) - var(--i))*1px))}
+.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*0.4px))}
+.sh:not(.f){transform:rotateY(0deg) translateZ(calc((var(--n) - var(--i))*0.4px))}
 
 .fc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;container-type:inline-size;background:var(--pp);overflow:hidden;pointer-events:none!important}
 .fr{border-radius:2px 10px 10px 2px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset 8px 0 14px -8px rgba(0,0,0,.4)}
 .bk{transform:rotateY(180deg);border-radius:10px 2px 2px 10px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset -8px 0 14px -8px rgba(0,0,0,.4)}
 
-.sh.active-left .bk{pointer-events:auto!important}
-.sh.active-right .fr{pointer-events:auto!important}
+.sh.active-left .bk{pointer-events:auto!important;z-index:10}
+.sh.active-right .fr{pointer-events:auto!important;z-index:10}
 .sh.active-left .bk *, .sh.active-right .fr *{pointer-events:auto!important}
 
 /* ===== Portada Premium ===== */
@@ -65,13 +70,10 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 
 .theme-red{background:linear-gradient(135deg,#b02418,#6e1008);border:4px solid #420804;color:#f6d36b}
 .theme-red .ball{border-color:#111;background:linear-gradient(#e63b2e 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(230,59,46,.5),0 0 0 1.5cqw #f6d36b}
-
 .theme-ultra{background:linear-gradient(135deg,#233342,#111a22);border:4px solid #090e13;color:#f1c40f}
 .theme-ultra .ball{border-color:#111;background:linear-gradient(#f39c12 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(243,156,18,.5),0 0 0 1.5cqw #f1c40f}
-
 .theme-master{background:linear-gradient(135deg,#73318f,#401b50);border:4px solid #230d2d;color:#e84393}
 .theme-master .ball{border-color:#111;background:linear-gradient(#9b59b6 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(155,89,182,.5),0 0 0 1.5cqw #e84393}
-
 .theme-leather{background:linear-gradient(135deg,#2e1a0e,#190d07);border:4px solid #0b0503;color:#d4af37}
 .theme-leather .ball{border-color:#111;background:linear-gradient(#d4af37 0 45%,#111 45% 55%,#222 55%);box-shadow:0 0 25px rgba(212,175,55,.5),0 0 0 1.5cqw #d4af37}
 
@@ -147,13 +149,15 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
  <div class="hud-sub" id="sc">0 de 151 cartas</div>
  <div class="hud-bar"><i id="sb"></i></div>
  
+ <div class="hud-section">Ir a Pokémon</div>
+ <input type="text" class="hud-input" id="pokedexSearch" placeholder="🔍 Buscar por nombre o nº..." autocomplete="off">
+ <div class="search-results" id="searchResults"></div>
+
  <div class="filter-bar">
   <button class="filter-btn active" id="fAll">Todas</button>
   <button class="filter-btn" id="fOwned">Tengo</button>
   <button class="filter-btn" id="fEmpty">Falta</button>
  </div>
- 
- <button class="hud-btn primary" id="openBoosterBtn">🎁 ABRIR SOBRE DIARIO</button>
  
  <div class="hud-section">Gestión</div>
  <div class="hud-actions">
@@ -263,7 +267,6 @@ async function loadCards(n){
 const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}" loading="lazy"><div class="shine"></div></div>`;
 const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${PAGES}</div></div></div>`;
 
-/* Construir Hojas: Portada + Páginas continuas */
 const faces=[
  `<div class="fc cover fr theme-red" id="cv"><div class="ball"></div><div class="cover-badge">KANTO GEN I</div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
  pgFace(0,"bk")
@@ -313,7 +316,36 @@ function go(v, silent=false){
  updateActiveFaces();
 }
 
-/* ===== Rotación 360° en Portada ===== */
+/* Salto directo por búsqueda de Pokédex */
+function jumpToPokemon(n){
+ const pageIndex = Math.floor((n-1)/PER);
+ const sheetIndex = Math.floor(pageIndex/2) + 1;
+ go(sheetIndex);
+}
+
+const pokeInput = document.getElementById("pokedexSearch");
+const pokeResults = document.getElementById("searchResults");
+
+pokeInput.oninput = e => {
+ const q = e.target.value.toLowerCase().trim();
+ if(!q){ pokeResults.classList.remove("open"); return; }
+ const matches = NAMES.map((name, i)=>({n: i+1, name})).filter(item => item.name.toLowerCase().includes(q) || item.n.toString() === q);
+ if(matches.length === 0){ pokeResults.classList.remove("open"); return; }
+ 
+ pokeResults.innerHTML = matches.slice(0, 8).map(m => `<div class="search-item" data-n="${m.n}"><span>#${String(m.n).padStart(3,"0")} ${m.name}</span><small>Pág. ${Math.floor((m.n-1)/PER)+1}</small></div>`).join("");
+ pokeResults.classList.add("open");
+};
+
+pokeResults.onclick = e => {
+ const item = e.target.closest(".search-item");
+ if(!item) return;
+ const n = +item.dataset.n;
+ pokeInput.value = `#${String(n).padStart(3,"0")} ${NAMES[n-1]}`;
+ pokeResults.classList.remove("open");
+ jumpToPokemon(n);
+};
+
+/* Rotación 360° en Portada */
 let isDragging=false, startX=0, startY=0, rotY=0, rotX=0;
 const scene=document.getElementById("scene");
 
@@ -341,7 +373,7 @@ function updateBookRotation(){
  }
 }
 
-/* ===== Modal y Búsqueda ===== */
+/* Modal y Búsqueda */
 let currentCards=[];
 async function openPoke(n){
  const o=document.getElementById("sheet");
@@ -391,7 +423,7 @@ function renderCards(n,filterText){
 
 const close=()=>document.getElementById("ov").classList.remove("open");
 
-/* ===== Inspector 3D ===== */
+/* Inspector 3D */
 function openInspector(card){
  const ins = document.getElementById("inspector");
  const insCard = document.getElementById("insCard");
@@ -402,41 +434,7 @@ function openInspector(card){
 }
 document.getElementById("closeIns").onclick=()=>document.getElementById("inspector").classList.remove("open");
 
-/* ===== Minijuego Abrir Sobre ===== */
-document.getElementById("openBoosterBtn").onclick=async ()=>{
- const o=document.getElementById("sheet");
- o.innerHTML=`<div class="sheet-header"><h2>🎁 SOBRE DE REGALO TCG</h2></div><div class="msg">Generando sobre con 5 cartas aleatorias...</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>`;
- document.getElementById("ov").classList.add("open");document.getElementById("cl").onclick=close;
- 
- const randomNums = Array.from({length:5},()=>Math.floor(Math.random()*N)+1);
- const pulledCards = [];
- for(let num of randomNums){
-  try{
-   const cards = await loadCards(num);
-   if(cards.length) pulledCards.push({num, card: cards[Math.floor(Math.random()*cards.length)]});
-  }catch(e){}
- }
- 
- let h=`<div class="sheet-header"><h2>🎁 ¡SOBRE DE REGALO OBTENIDO!</h2></div>
- <div style="font-size:13px;color:var(--mu);margin-bottom:12px">Toca "Guardar" en cualquier carta para colocarla en tu álbum:</div>
- <div class="cg">`;
- pulledCards.forEach(item=>{
-  h+=`<div class="opt" data-n="${item.num}" data-id="${item.card.id}">${cardHTML(item.card)}<small><b>#${item.num} ${NAMES[item.num-1]}</b><br>${item.card.set}<br><button class="btn" style="margin-top:6px;padding:4px 8px;font-size:10px">Guardar</button></small></div>`;
- });
- h+=`</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>`;
- o.innerHTML=h;
- document.getElementById("cl").onclick=close;
- 
- o.querySelectorAll(".opt").forEach(opt=>{
-  opt.onclick=()=>{
-   const num = +opt.dataset.n;
-   const c = pulledCards.find(x=>x.card.id===opt.dataset.id).card;
-   picks[num] = c; playPlaceSound(); save(); close(); fill(num);
-  };
- });
-};
-
-/* ===== Filtros ===== */
+/* Filtros */
 const setFilter=(f, btn)=>{
  currentFilter = f;
  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -447,7 +445,7 @@ document.getElementById('fAll').onclick=e=>setFilter('all',e.target);
 document.getElementById('fOwned').onclick=e=>setFilter('owned',e.target);
 document.getElementById('fEmpty').onclick=e=>setFilter('empty',e.target);
 
-/* ===== HUD Tools ===== */
+/* HUD Tools */
 document.getElementById("exportBtn").onclick=()=>{
  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(picks, null, 2));
  const dlAnchor = document.createElement('a');
@@ -501,7 +499,7 @@ document.getElementById("themeSelect").onchange=e=>{
  cover.className = `fc cover fr ${e.target.value}`;
 };
 
-/* ===== Interacción ===== */
+/* Interacción */
 book.addEventListener("click",e=>{
  if(e.target.closest("#cv")){go(1);return}
  const b=e.target.closest(".slot");
@@ -517,7 +515,7 @@ document.getElementById("prev").onclick=()=>go(s-1);
 document.getElementById("next").onclick=()=>go(s+1);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
 
-/* ===== Efecto Holográfico ===== */
+/* Efecto Holográfico */
 function setHoloTransform(card, x, y){
  card.style.setProperty("--mx", x*100+"%");
  card.style.setProperty("--my", y*100+"%");
