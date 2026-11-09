@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none}
 
-/* ===== Mesa y Tapete ===== */
+/* ===== Tapete Negro ===== */
 .playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#181820 0%,#040406 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
 .playmat{width:min(96vw,1300px);height:min(88vh,860px);background:#121216;border-radius:28px;border:8px solid #0a0a0d;box-shadow:inset 0 0 90px rgba(0,0,0,.95),0 25px 60px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
 .playmat::before{content:"";position:absolute;inset:16px;border:2px dashed rgba(255,255,255,.06);border-radius:20px;pointer-events:none}
@@ -17,11 +17,11 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .playmat-logo::after{content:"";width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.02)}
 
 /* ===== HUD Lateral ===== */
-.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:250px}
+.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:255px}
 .hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .hud-led{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
 .hud-val{font-family:var(--px);font-size:18px;color:#4ade80;margin-bottom:8px}
-.hud-sub{font-size:12px;color:#a09cb0;margin-bottom:8px}
+.hud-sub{font-size:12px;color:#a09cb0;margin-bottom:8px;display:flex;justify-content:space-between}
 .hud-bar{height:8px;background:#2a2833;border-radius:6px;overflow:hidden;margin-bottom:14px}.hud-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5a4d,#4ade80);transition:width .6s}
 .hud-section{font-size:10px;color:var(--mu);margin:10px 0 6px;font-family:var(--px);text-transform:uppercase}
 .hud-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
@@ -36,12 +36,17 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .search-item{padding:8px 12px;font-size:11px;color:#d8d0bd;cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05)}
 .search-item:hover{background:var(--ac);color:#fff}
 
-/* Filtros */
-.filter-bar{display:flex;gap:8px;margin-bottom:12px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
-.filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px;border-radius:7px;font-size:10px;font-family:var(--px);cursor:pointer;transition:all .2s}
+/* Filtros rápidos */
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
+.filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px 4px;border-radius:7px;font-size:9px;font-family:var(--px);cursor:pointer;transition:all .2s}
 .filter-btn.active{background:var(--ac);color:#fff}
 
-/* ===== Escena 3D & Estructura ===== */
+/* Insignias */
+.badges-container{display:flex;gap:4px;margin-top:4px;justify-content:space-between}
+.badge-icon{font-size:14px;opacity:0.25;transition:opacity .3s, transform .3s;filter:grayscale(1)}
+.badge-icon.active{opacity:1;filter:none;transform:scale(1.15)}
+
+/* ===== Escena 3D ===== */
 .scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%;cursor:grab}
 .scene:active{cursor:grabbing}
 .book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
@@ -146,9 +151,24 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 <div class="hud-panel">
  <div class="hud-title"><span>Colección TCG</span><div class="hud-led"></div></div>
  <div class="hud-val" id="sv">0,00 €</div>
- <div class="hud-sub" id="sc">0 de 151 cartas</div>
+ <div class="hud-sub">
+  <span id="sc">0 de 151 cartas</span>
+  <span id="sp">0%</span>
+ </div>
  <div class="hud-bar"><i id="sb"></i></div>
- 
+
+ <div class="hud-section">Medallas Kanto</div>
+ <div class="badges-container">
+  <span class="badge-icon" id="b1" title="Medalla Roca (20 cartas)">🪨</span>
+  <span class="badge-icon" id="b2" title="Medalla Cascada (40 cartas)">💧</span>
+  <span class="badge-icon" id="b3" title="Medalla Trueno (60 cartas)">⚡</span>
+  <span class="badge-icon" id="b4" title="Medalla Arcoíris (80 cartas)">🌈</span>
+  <span class="badge-icon" id="b5" title="Medalla Alma (100 cartas)">🪷</span>
+  <span class="badge-icon" id="b6" title="Medalla Pantano (120 cartas)">👁️</span>
+  <span class="badge-icon" id="b7" title="Medalla Volcán (140 cartas)">🔥</span>
+  <span class="badge-icon" id="b8" title="Medalla Tierra (151 cartas)">🏆</span>
+ </div>
+
  <div class="hud-section">Ir a Pokémon</div>
  <input type="text" class="hud-input" id="pokedexSearch" placeholder="🔍 Buscar por nombre o nº..." autocomplete="off">
  <div class="search-results" id="searchResults"></div>
@@ -294,9 +314,24 @@ function fill(animNum=null){
   }
   document.getElementById("g"+p).innerHTML=h}
  let t=0,c=0;for(const n in picks){t+=picks[n].price;c++}
+ const pct = Math.round((c/N)*100);
  document.getElementById("sv").textContent=eur(t);
  document.getElementById("sc").textContent=`${c} de ${N} cartas`;
- document.getElementById("sb").style.width=(c/N*100)+"%";updateActiveFaces()}
+ document.getElementById("sp").textContent=`${pct}%`;
+ document.getElementById("sb").style.width=pct+"%";
+ 
+ // Actualizar Medallas
+ document.getElementById("b1").classList.toggle("active", c >= 20);
+ document.getElementById("b2").classList.toggle("active", c >= 40);
+ document.getElementById("b3").classList.toggle("active", c >= 60);
+ document.getElementById("b4").classList.toggle("active", c >= 80);
+ document.getElementById("b5").classList.toggle("active", c >= 100);
+ document.getElementById("b6").classList.toggle("active", c >= 120);
+ document.getElementById("b7").classList.toggle("active", c >= 140);
+ document.getElementById("b8").classList.toggle("active", c >= 151);
+
+ updateActiveFaces();
+}
 
 function updateActiveFaces(){
  sh.forEach((e,i)=>{
