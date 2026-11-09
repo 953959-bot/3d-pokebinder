@@ -9,7 +9,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 
-/* ===== Mesa y Tapete Negro ===== */
+/* ===== Tapete Negro ===== */
 .playmat-table{position:fixed;inset:0;background:radial-gradient(circle at 50% 40%,#1a1a20 0%,#050507 100%);display:flex;align-items:center;justify-content:center;z-index:-1;overflow:hidden}
 .playmat{width:min(96vw,1280px);height:min(86vh,840px);background:#141418;border-radius:24px;border:8px solid #0d0d10;box-shadow:inset 0 0 80px rgba(0,0,0,.9),0 20px 50px rgba(0,0,0,.9);position:relative;display:flex;align-items:center;justify-content:center}
 .playmat::before{content:"";position:absolute;inset:14px;border:2px dashed rgba(255,255,255,.08);border-radius:16px;pointer-events:none}
@@ -17,31 +17,52 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .playmat-logo::after{content:"";width:90px;height:90px;border-radius:50%;border:6px solid rgba(255,255,255,.03)}
 
 /* ===== HUD Lateral ===== */
-.hud-panel{position:fixed;top:20px;left:20px;background:rgba(20,20,24,.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 20px;color:#fff;z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px}
+.hud-panel{position:fixed;top:20px;left:20px;background:rgba(20,20,24,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 20px;color:#fff;z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:230px}
 .hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
 .hud-val{font-family:var(--px);font-size:18px;color:#4ade80;margin-bottom:8px}
 .hud-sub{font-size:12px;color:#a09cb0;margin-bottom:8px}
 .hud-bar{height:8px;background:#2a2833;border-radius:6px;overflow:hidden;margin-bottom:12px}.hud-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff5a4d,#4ade80);transition:width .6s}
-.hud-actions{display:flex;gap:8px}
-.hud-btn{background:#2a2833;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;flex:1;font-family:inherit;transition:background .2s}
+.hud-section{font-size:11px;color:var(--mu);margin:10px 0 4px;font-family:var(--px)}
+.hud-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.hud-btn{background:#2a2833;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px;font-size:10px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s;text-align:center}
 .hud-btn:hover{background:#3a3846;color:#fff}
+.hud-select{width:100%;background:#2a2833;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 8px;font-size:11px;font-family:inherit;outline:none}
 
-/* ===== Escena 3D Ampliada ===== */
+/* ===== Escena 3D y Ajustes de Capas ===== */
 .scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%}
 .book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
 .book.open{transform:none}
 .book.end{transform:translateX(calc(var(--pw)*.5))}
-.sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:rotateY(0) translateZ(calc((var(--n) - var(--i))*2px))}
-.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*-2px));pointer-events:none}
-.sh.f .fc.bk{pointer-events:auto}
-.sh:not(.f) .fc.fr{pointer-events:auto}
+
+.sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);pointer-events:none}
+.sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*2px))}
+.sh:not(.f){transform:rotateY(0deg) translateZ(calc((var(--n) - var(--i))*2px))}
+
 .fc{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;container-type:inline-size;background:var(--pp);overflow:hidden;pointer-events:none}
 .fr{border-radius:2px 10px 10px 2px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset 8px 0 14px -8px rgba(0,0,0,.4)}
 .bk{transform:rotateY(180deg);border-radius:10px 2px 2px 10px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset -8px 0 14px -8px rgba(0,0,0,.4)}
-.cover{background:linear-gradient(135deg,#c0392b,#80190f);border:3px solid #55100a;border-radius:4px 14px 14px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw;color:#f6d36b;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw;pointer-events:auto!important}
-.cover small{font-size:4.4cqw;color:#f6d36bcc;animation:bl 1.4s steps(2) infinite}
+
+/* Habilitar interacción solo en caras activas */
+.sh.active-left .bk, .sh.active-right .fr{pointer-events:auto!important}
+
+/* Estilos de Portadas */
+.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw;pointer-events:auto!important;transition:background .3s}
+.cover small{font-size:4.4cqw;animation:bl 1.4s steps(2) infinite}
 @keyframes bl{50%{opacity:.2}}
-.ball{width:42cqw;aspect-ratio:1;border-radius:50%;border:1.6cqw solid #1b1b1b;background:linear-gradient(#e63b2e 0 45%,#1b1b1b 45% 55%,#fff 55%);position:relative;box-shadow:0 0 0 1.2cqw #f6d36b}
+
+.theme-red{background:linear-gradient(135deg,#c0392b,#80190f);border:3px solid #55100a;color:#f6d36b}
+.theme-red .ball{border-color:#1b1b1b;background:linear-gradient(#e63b2e 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f6d36b}
+
+.theme-ultra{background:linear-gradient(135deg,#2c3e50,#1a252f);border:3px solid #0f171e;color:#f1c40f}
+.theme-ultra .ball{border-color:#1b1b1b;background:linear-gradient(#f39c12 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f1c40f}
+
+.theme-master{background:linear-gradient(135deg,#8e44ad,#5b2c6f);border:3px solid #3b1849;color:#e84393}
+.theme-master .ball{border-color:#1b1b1b;background:linear-gradient(#9b59b6 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #e84393}
+
+.theme-leather{background:linear-gradient(135deg,#3d2314,#24140b);border:3px solid #140b06;color:#d4af37}
+.theme-leather .ball{border-color:#1b1b1b;background:linear-gradient(#d4af37 0 45%,#1b1b1b 45% 55%,#222 55%);box-shadow:0 0 0 1.2cqw #d4af37}
+
+.ball{width:42cqw;aspect-ratio:1;border-radius:50%;border:1.6cqw solid #1b1b1b;position:relative}
 .ball::after{content:"";position:absolute;inset:50% auto auto 50%;width:12cqw;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:1.6cqw solid #1b1b1b}
 .pgi{position:absolute;inset:0;padding:4cqw;display:flex;flex-direction:column}
 .g{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5cqw}
@@ -57,7 +78,7 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .show .slot{animation:pop .45s both;animation-delay:calc(var(--j)*70ms + .45s)}
 @keyframes pop{from{opacity:0;transform:scale(.7) translateY(10px)}}
 
-/* ===== Cartas y Animación ===== */
+/* ===== Cartas y Animaciones ===== */
 .card{position:relative;width:100%;aspect-ratio:5/7;border-radius:4.5%;overflow:hidden;transition:transform .15s;background:#0002}
 .card img{width:100%;height:100%;display:block;object-fit:cover}
 .shine{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 15%,rgba(255,0,128,.5),rgba(0,255,220,.5),rgba(255,230,0,.5),transparent 85%);background-size:250% 250%;background-position:var(--mx,30%) var(--my,30%);mix-blend-mode:soft-light}
@@ -93,7 +114,7 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 .acts{display:flex;gap:10px;margin-top:20px}
 .msg{padding:30px 0;text-align:center;color:var(--mu);font-size:14px}
 
-/* ===== Inspector 3D Gigante ===== */
+/* ===== Inspector 3D ===== */
 .inspector-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column}
 .inspector-overlay.open{display:flex}
 .inspector-card-wrapper{width:min(80vw,360px);aspect-ratio:5/7;perspective:1000px;cursor:grab}
@@ -105,17 +126,29 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 <!-- Tapete Negro -->
 <div class="playmat-table"><div class="playmat"><div class="playmat-logo"></div></div></div>
 
-<!-- HUD Balance, Progreso y Backup -->
+<!-- HUD Balance y Utilidades -->
 <div class="hud-panel">
  <div class="hud-title">Colección TCG</div>
  <div class="hud-val" id="sv">0,00 €</div>
  <div class="hud-sub" id="sc">0 de 151 cartas</div>
  <div class="hud-bar"><i id="sb"></i></div>
+ 
+ <div class="hud-section">Gestión</div>
  <div class="hud-actions">
   <button class="hud-btn" id="exportBtn">Exportar</button>
   <button class="hud-btn" id="importBtn">Importar</button>
+  <button class="hud-btn" id="shareLinkBtn">Copiar Link</button>
+  <button class="hud-btn" id="refreshPricesBtn">Precios ↻</button>
   <input type="file" id="importFile" accept=".json" style="display:none">
  </div>
+ 
+ <div class="hud-section">Estilo Binder</div>
+ <select class="hud-select" id="themeSelect">
+  <option value="theme-red">Pokéball Clásica</option>
+  <option value="theme-ultra">Ultra Ball</option>
+  <option value="theme-master">Master Ball</option>
+  <option value="theme-leather">Cuero Coleccionista</option>
+ </select>
 </div>
 
 <div class="scene"><div class="book" id="book"></div></div>
@@ -130,7 +163,7 @@ body{margin:0;background:#0a0a0c;color:var(--tx);font-family:system-ui,-apple-sy
 </div>
 
 <script>
-/* ===== Efectos de Sonido ASMR / Retro (Web Audio API) ===== */
+/* ===== Sonidos Web Audio API ===== */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 function initAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); }
@@ -151,8 +184,8 @@ function playPlaceSound(){
  initAudio();
  const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
  osc.type = 'triangle';
- osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
- osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+ osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+ osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
  osc.connect(gain); gain.connect(audioCtx.destination);
@@ -171,7 +204,7 @@ function playRemoveSound(){
  osc.start(); osc.stop(audioCtx.currentTime + 0.1);
 }
 
-/* ===== Configuración e Inicialización ===== */
+/* ===== Configuración ===== */
 const API="https://api.pokemontcg.io/v2";
 const API_KEY="";
 const SPRITE=n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${n}.png`;
@@ -184,7 +217,16 @@ const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
 const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
 let picks={},s=0;const cache={};
 
-try{picks=JSON.parse(localStorage.getItem(STORE)||"{}")||{}}catch(e){}
+// Cargar desde URL o LocalStorage
+const urlParams = new URLSearchParams(window.location.search);
+const sharedData = urlParams.get("col");
+if(sharedData){
+ try{ picks = JSON.parse(atob(sharedData)); }catch(e){}
+}
+if(Object.keys(picks).length===0){
+ try{picks=JSON.parse(localStorage.getItem(STORE)||"{}")||{}}catch(e){}
+}
+
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(picks))}catch(e){}};
 
 async function loadCards(n){
@@ -200,14 +242,14 @@ async function loadCards(n){
 const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}" loading="lazy"><div class="shine"></div></div>`;
 const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${PAGES}</div></div></div>`;
 const faces=[
- `<div class="fc cover fr" id="cv"><div class="ball"></div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
+ `<div class="fc cover fr theme-red" id="cv"><div class="ball"></div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
  `<div class="fc bk st"><div class="pgi"><h2>INICIO</h2><p style="margin-top:20%">Selecciona cualquier hueco para añadir o cambiar cartas reales de Pokémon TCG.</p></div></div>`];
 for(let p=0;p<PAGES;p++)faces.push(pgFace(p,(p%2===0)?"fr":"bk"));
 while(faces.length<2*S)faces.push(`<div class="fc bk st"><div class="pgi"><h2>FIN</h2><p>Primera generación completada.</p></div></div>`);
 
 const book=document.getElementById("book");
 book.innerHTML=Array.from({length:S},(_,i)=>`<div class="sh" style="--i:${i};--n:${S}">${faces[2*i]}${faces[2*i+1]}</div>`).join("");
-const sh=[...book.children],fcs=[...book.querySelectorAll(".fc")];
+const sh=[...book.children];
 
 function fill(animNum=null){
  for(let p=0;p<PAGES;p++){let h="";
@@ -219,18 +261,26 @@ function fill(animNum=null){
  let t=0,c=0;for(const n in picks){t+=picks[n].price;c++}
  document.getElementById("sv").textContent=eur(t);
  document.getElementById("sc").textContent=`${c} de ${N} cartas`;
- document.getElementById("sb").style.width=(c/N*100)+"%";show()}
+ document.getElementById("sb").style.width=(c/N*100)+"%";updateActiveFaces()}
 
-const show=()=>fcs.forEach((f,i)=>f.classList.toggle("show",i===2*s-1||i===2*s));
+function updateActiveFaces(){
+ sh.forEach((e,i)=>{
+  e.classList.toggle("f", i < s);
+  e.classList.toggle("active-left", i === s - 1);
+  e.classList.toggle("active-right", i === s);
+ });
+}
+
 function go(v, silent=false){
  if(!silent && s!==v) playFlipSound();
  s=Math.max(0,Math.min(S,v));
- sh.forEach((e,i)=>e.classList.toggle("f",i<s));
  book.className="book"+(s===S?" end":s>0?" open":"");
  document.getElementById("prev").disabled=s===0;document.getElementById("next").disabled=s===S;
- document.getElementById("lb").textContent=s===0?"PORTADA":s===S?"FIN":`HOJA ${s}/${S-1}`;show()}
+ document.getElementById("lb").textContent=s===0?"PORTADA":s===S?"FIN":`HOJA ${s}/${S-1}`;
+ updateActiveFaces();
+}
 
-/* ===== Modal y Buscador ===== */
+/* ===== Modal de Búsqueda ===== */
 let currentCards=[];
 async function openPoke(n){
  const o=document.getElementById("sheet");
@@ -255,7 +305,7 @@ function renderCards(n,filterText){
  
  let h=`<div class="sheet-header">
   <h2>#${n} ${NAMES[n-1]}</h2>
-  <input type="text" class="search-input" id="cardSearch" placeholder="🔍 Buscar por expansión (ej: Base Set, Rocket) o rareza..." value="${filterText}">
+  <input type="text" class="search-input" id="cardSearch" placeholder="🔍 Buscar por expansión o rareza..." value="${filterText}">
  </div>`;
  
  if(filtered.length===0){
@@ -291,7 +341,7 @@ function openInspector(card){
 }
 document.getElementById("closeIns").onclick=()=>document.getElementById("inspector").classList.remove("open");
 
-/* ===== Importar / Exportar Colección ===== */
+/* ===== Herramientas del HUD ===== */
 document.getElementById("exportBtn").onclick=()=>{
  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(picks, null, 2));
  const dlAnchor = document.createElement('a');
@@ -311,30 +361,85 @@ document.getElementById("importFile").onchange=e=>{
   try{
    picks = JSON.parse(evt.target.result);
    save(); fill();
-   alert("¡Colección importada con éxito!");
-  }catch(err){ alert("Error al importar el archivo JSON."); }
+   alert("¡Colección cargada con éxito!");
+  }catch(err){ alert("Archivo JSON no válido."); }
  };
  reader.readAsText(file);
 };
 
+document.getElementById("shareLinkBtn").onclick=()=>{
+ const code = btoa(JSON.stringify(picks));
+ const shareUrl = `${window.location.origin}${window.location.pathname}?col=${code}`;
+ navigator.clipboard.writeText(shareUrl).then(()=>{
+  alert("¡Enlace copiado al portapapeles! Puedes enviárselo a quien quieras.");
+ });
+};
+
+document.getElementById("refreshPricesBtn").onclick=async ()=>{
+ const btn = document.getElementById("refreshPricesBtn");
+ btn.textContent = "Cargando...";
+ for(let n in picks){
+  try{
+   const cards = await loadCards(+n);
+   const updated = cards.find(c=>c.id === picks[n].id);
+   if(updated) picks[n].price = updated.price;
+  }catch(e){}
+ }
+ save(); fill();
+ btn.textContent = "Precios ↻";
+ alert("¡Precios actualizados con éxito!");
+};
+
+// Cambiar Portada / Tema
+document.getElementById("themeSelect").onchange=e=>{
+ const cover = document.getElementById("cv");
+ cover.className = `fc cover fr ${e.target.value}`;
+};
+
 /* ===== Eventos de la Interfaz ===== */
-book.addEventListener("click",e=>{if(e.target.closest("#cv")){go(1);return}const b=e.target.closest(".slot");if(b)openPoke(+b.dataset.n)});
+book.addEventListener("click",e=>{
+ if(e.target.closest("#cv")){go(1);return}
+ const b=e.target.closest(".slot");
+ if(b) openPoke(+b.dataset.n);
+});
+
 document.getElementById("sheet").addEventListener("click",e=>{const op=e.target.closest(".opt");if(!op)return;
  const n=+document.getElementById("sheet").dataset.n,c=cache[n].find(x=>x.id===op.dataset.id);
  if(c){picks[n]=c;playPlaceSound();save();close();fill(n)}});
+
 document.getElementById("ov").addEventListener("click",e=>{if(e.target.id==="ov")close()});
 document.getElementById("prev").onclick=()=>go(s-1);
 document.getElementById("next").onclick=()=>go(s+1);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
 
-/* Efecto Holográfico 3D (Álbum e Inspector) */
+/* ===== Brillo Holográfico (Ratón + Sensor Giroscopio Móvil) ===== */
+function setHoloTransform(card, x, y){
+ card.style.setProperty("--mx", x*100+"%");
+ card.style.setProperty("--my", y*100+"%");
+ card.style.transform=`perspective(600px) rotateY(${(x-.5)*24}deg) rotateX(${(.5-y)*24}deg)`;
+ card.classList.add("on");
+}
+
 document.addEventListener("pointermove",e=>{
  const c=e.target.closest&&e.target.closest(".card.holo, .inspector-card-wrapper .card");if(!c)return;
  const b=c.getBoundingClientRect(),x=(e.clientX-b.left)/b.width,y=(e.clientY-b.top)/b.height;
- c.style.setProperty("--mx",x*100+"%");c.style.setProperty("--my",y*100+"%");
- c.style.transform=`perspective(600px) rotateY(${(x-.5)*20}deg) rotateX(${(.5-y)*20}deg)`;c.classList.add("on")});
-document.addEventListener("pointerout",e=>{const c=e.target.closest&&e.target.closest(".card.holo, .inspector-card-wrapper .card");
- if(c&&!c.contains(e.relatedTarget)){c.style.transform="";c.classList.remove("on")}});
+ setHoloTransform(c, x, y);
+});
+
+document.addEventListener("pointerout",e=>{
+ const c=e.target.closest&&e.target.closest(".card.holo, .inspector-card-wrapper .card");
+ if(c&&!c.contains(e.relatedTarget)){c.style.transform="";c.classList.remove("on")}
+});
+
+if (window.DeviceOrientationEvent) {
+ window.addEventListener('deviceorientation', e => {
+  const cards = document.querySelectorAll('.card.holo');
+  if(!cards.length) return;
+  const x = Math.min(Math.max((e.gamma || 0) + 20, 0), 40) / 40;
+  const y = Math.min(Math.max((e.beta || 0) - 20, 0), 40) / 40;
+  cards.forEach(c => setHoloTransform(c, x, y));
+ });
+}
 
 fill();go(0, true);
 </script></body></html>
