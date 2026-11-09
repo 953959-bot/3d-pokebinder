@@ -17,7 +17,7 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .playmat-logo::after{content:"";width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.02)}
 
 /* ===== HUD Lateral ===== */
-.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:240px}
+.hud-panel{position:fixed;top:20px;left:20px;background:rgba(18,18,22,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px 22px;color:#fff;z-index:20;box-shadow:0 12px 35px rgba(0,0,0,.6);min-width:240px}
 .hud-title{font-family:var(--px);font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .hud-led{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
 .hud-val{font-family:var(--px);font-size:18px;color:#4ade80;margin-bottom:8px}
@@ -31,16 +31,17 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .hud-btn.primary:hover{filter:brightness(1.15)}
 .hud-select{width:100%;background:#262430;color:#d8d0bd;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none}
 
-/* ===== Barra de Filtros de Vista ===== */
+/* ===== Filtros ===== */
 .filter-bar{display:flex;gap:8px;margin-bottom:10px;background:rgba(255,255,255,.04);padding:4px;border-radius:10px}
 .filter-btn{flex:1;background:none;border:none;color:var(--mu);padding:6px;border-radius:7px;font-size:10px;font-family:var(--px);cursor:pointer;transition:all .2s}
 .filter-btn.active{background:var(--ac);color:#fff}
 
-/* ===== Escena 3D Corrección de Capas ===== */
-.scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%}
+/* ===== Escena 3D & 360° Rotación ===== */
+.scene{--pw:min(46vw,480px);perspective:2500px;padding:10px 0;display:flex;justify-content:center;align-items:center;width:100%;cursor:grab}
+.scene:active{cursor:grabbing}
 .book{position:relative;width:calc(var(--pw)*2);height:calc(var(--pw)*1.42);transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);transform:translateX(calc(var(--pw)*-.5))}
-.book.open{transform:none}
-.book.end{transform:translateX(calc(var(--pw)*.5))}
+.book.open{transform:none!important}
+.book.end{transform:translateX(calc(var(--pw)*.5))!important}
 
 .sh{position:absolute;left:50%;top:0;width:var(--pw);height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.1,.2,1);pointer-events:none}
 .sh.f{transform:rotateY(-180deg) translateZ(calc(var(--i)*1px))}
@@ -50,32 +51,38 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .fr{border-radius:2px 10px 10px 2px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset 8px 0 14px -8px rgba(0,0,0,.4)}
 .bk{transform:rotateY(180deg);border-radius:10px 2px 2px 10px;box-shadow:0 12px 36px rgba(0,0,0,.5),inset -8px 0 14px -8px rgba(0,0,0,.4)}
 
-/* Activación Estricta de Clics */
 .sh.active-left .bk{pointer-events:auto!important}
 .sh.active-right .fr{pointer-events:auto!important}
 .sh.active-left .bk *, .sh.active-right .fr *{pointer-events:auto!important}
 
-/* Estilos de Portadas */
-.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7cqw;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw;pointer-events:auto!important;transition:background .3s}
-.cover small{font-size:4.4cqw;animation:bl 1.4s steps(2) infinite}
+/* ===== Portada Premium ===== */
+.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5cqw;font-family:var(--px);text-align:center;cursor:pointer;font-size:8cqw;pointer-events:auto!important;transition:all .3s;box-shadow:inset 0 0 30px rgba(0,0,0,.6),0 15px 40px rgba(0,0,0,.6);position:relative}
+.cover::before{content:"";position:absolute;inset:12px;border:3px double rgba(246,211,107,.4);border-radius:8px;pointer-events:none}
+.cover small{font-size:4cqw;animation:bl 1.4s steps(2) infinite;letter-spacing:1px}
 @keyframes bl{50%{opacity:.2}}
 
-.theme-red{background:linear-gradient(135deg,#c0392b,#80190f);border:3px solid #55100a;color:#f6d36b}
-.theme-red .ball{border-color:#1b1b1b;background:linear-gradient(#e63b2e 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f6d36b}
-.theme-ultra{background:linear-gradient(135deg,#2c3e50,#1a252f);border:3px solid #0f171e;color:#f1c40f}
-.theme-ultra .ball{border-color:#1b1b1b;background:linear-gradient(#f39c12 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #f1c40f}
-.theme-master{background:linear-gradient(135deg,#8e44ad,#5b2c6f);border:3px solid #3b1849;color:#e84393}
-.theme-master .ball{border-color:#1b1b1b;background:linear-gradient(#9b59b6 0 45%,#1b1b1b 45% 55%,#fff 55%);box-shadow:0 0 0 1.2cqw #e84393}
-.theme-leather{background:linear-gradient(135deg,#3d2314,#24140b);border:3px solid #140b06;color:#d4af37}
-.theme-leather .ball{border-color:#1b1b1b;background:linear-gradient(#d4af37 0 45%,#1b1b1b 45% 55%,#222 55%);box-shadow:0 0 0 1.2cqw #d4af37}
+.cover-badge{background:rgba(0,0,0,.4);border:2px solid #f6d36b;padding:6px 16px;border-radius:20px;color:#f6d36b;font-size:3.5cqw;letter-spacing:2px}
 
-.ball{width:42cqw;aspect-ratio:1;border-radius:50%;border:1.6cqw solid #1b1b1b;position:relative}
-.ball::after{content:"";position:absolute;inset:50% auto auto 50%;width:12cqw;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:1.6cqw solid #1b1b1b}
+.theme-red{background:linear-gradient(135deg,#b02418,#6e1008);border:4px solid #420804;color:#f6d36b}
+.theme-red .ball{border-color:#111;background:linear-gradient(#e63b2e 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(230,59,46,.5),0 0 0 1.5cqw #f6d36b}
+
+.theme-ultra{background:linear-gradient(135deg,#233342,#111a22);border:4px solid #090e13;color:#f1c40f}
+.theme-ultra .ball{border-color:#111;background:linear-gradient(#f39c12 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(243,156,18,.5),0 0 0 1.5cqw #f1c40f}
+
+.theme-master{background:linear-gradient(135deg,#73318f,#401b50);border:4px solid #230d2d;color:#e84393}
+.theme-master .ball{border-color:#111;background:linear-gradient(#9b59b6 0 45%,#111 45% 55%,#fff 55%);box-shadow:0 0 25px rgba(155,89,182,.5),0 0 0 1.5cqw #e84393}
+
+.theme-leather{background:linear-gradient(135deg,#2e1a0e,#190d07);border:4px solid #0b0503;color:#d4af37}
+.theme-leather .ball{border-color:#111;background:linear-gradient(#d4af37 0 45%,#111 45% 55%,#222 55%);box-shadow:0 0 25px rgba(212,175,55,.5),0 0 0 1.5cqw #d4af37}
+
+.ball{width:40cqw;aspect-ratio:1;border-radius:50%;border:1.6cqw solid #111;position:relative}
+.ball::after{content:"";position:absolute;inset:50% auto auto 50%;width:12cqw;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:1.6cqw solid #111;box-shadow:0 0 10px rgba(255,255,255,.8)}
+
 .pgi{position:absolute;inset:0;padding:4cqw;display:flex;flex-direction:column}
 .g{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5cqw}
 .ft{margin-top:auto;text-align:center;font-family:var(--px);font-size:3cqw;color:var(--mu)}
 
-/* ===== Huecos y Sprites Pixel Art ===== */
+/* ===== Huecos y Sprites ===== */
 .slot{aspect-ratio:5/7;border-radius:8px;border:0;padding:0;cursor:pointer;background:none;font-family:inherit;container-type:inline-size;display:block;width:100%;position:relative}
 .slot.e{background:#cadba0;border:2px solid #306230;color:#0f380f;font-family:var(--px);display:flex;flex-direction:column;align-items:center;padding:5cqw 4cqw;border-radius:6px;transition:transform .15s,filter .15s}
 .slot.e:hover{transform:translateY(-3px);filter:brightness(1.08)}
@@ -85,7 +92,7 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .show .slot{animation:pop .45s both;animation-delay:calc(var(--j)*70ms + .45s)}
 @keyframes pop{from{opacity:0;transform:scale(.7) translateY(10px)}}
 
-/* ===== Cartas y Animaciones ===== */
+/* ===== Cartas ===== */
 .card{position:relative;width:100%;aspect-ratio:5/7;border-radius:4.5%;overflow:hidden;transition:transform .15s;background:#0002}
 .card img{width:100%;height:100%;display:block;object-fit:cover}
 .shine{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 15%,rgba(255,0,128,.5),rgba(0,255,220,.5),rgba(255,230,0,.5),transparent 85%);background-size:250% 250%;background-position:var(--mx,30%) var(--my,30%);mix-blend-mode:soft-light}
@@ -120,11 +127,6 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .opt.sel .card{outline:4px solid var(--ac);outline-offset:2px;box-shadow:0 6px 16px rgba(0,0,0,.5)}
 .acts{display:flex;gap:10px;margin-top:20px}
 .msg{padding:30px 0;text-align:center;color:var(--mu);font-size:14px}
-
-/* ===== Minijuego Sobres TCG ===== */
-.booster-pack-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 0}
-.booster-pack{width:180px;height:280px;background:linear-gradient(135deg,#f39c12,#e67e22);border-radius:12px;border:4px solid #f1c40f;box-shadow:0 15px 35px rgba(243,156,18,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:var(--px);font-size:12px;text-align:center;cursor:pointer;transition:transform .3s}
-.booster-pack:hover{transform:scale(1.05) rotate(2deg)}
 
 /* ===== Inspector 3D ===== */
 .inspector-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column}
@@ -171,7 +173,7 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
  </select>
 </div>
 
-<div class="scene"><div class="book" id="book"></div></div>
+<div class="scene" id="scene"><div class="book" id="book"></div></div>
 <div class="nav"><button class="btn" id="prev">‹ Anterior</button><span id="lb"></span><button class="btn" id="next">Siguiente ›</button></div>
 <div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
 
@@ -231,7 +233,7 @@ const SPRITE=n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprite
 const STORE="pk_album_gen1";
 
 const NAMES="Bulbasaur,Ivysaur,Venusaur,Charmander,Charmeleon,Charizard,Squirtle,Wartortle,Blastoise,Caterpie,Metapod,Butterfree,Weedle,Kakuna,Beedrill,Pidgey,Pidgeotto,Pidgeot,Rattata,Raticate,Spearow,Fearow,Ekans,Arbok,Pikachu,Raichu,Sandshrew,Sandslash,Nidoran♀,Nidorina,Nidoqueen,Nidoran♂,Nidorino,Nidoking,Clefairy,Clefable,Vulpix,Ninetales,Jigglypuff,Wigglytuff,Zubat,Golbat,Oddish,Gloom,Vileplume,Paras,Parasect,Venonat,Venomoth,Diglett,Dugtrio,Meowth,Persian,Psyduck,Golduck,Mankey,Primeape,Growlithe,Arcanine,Poliwag,Poliwhirl,Poliwrath,Abra,Kadabra,Alakazam,Machop,Machoke,Machamp,Bellsprout,Weepinbell,Victreebel,Tentacool,Tentacruel,Geodude,Graveler,Golem,Ponyta,Rapidash,Slowpoke,Slowbro,Magnemite,Magneton,Farfetch'd,Doduo,Dodrio,Seel,Dewgong,Grimer,Muk,Shellder,Cloyster,Gastly,Haunter,Gengar,Onix,Drowzee,Hypno,Krabby,Kingler,Voltorb,Electrode,Exeggcute,Exeggutor,Cubone,Marowak,Hitmonlee,Hitmonchan,Lickitung,Koffing,Weezing,Rhyhorn,Rhydon,Chansey,Tangela,Kangaskhan,Horsea,Seadra,Goldeen,Seaking,Staryu,Starmie,Mr. Mime,Scyther,Jynx,Electabuzz,Magmar,Pinsir,Tauros,Magikarp,Gyarados,Lapras,Ditto,Eevee,Vaporeon,Jolteon,Flareon,Porygon,Omanyte,Omastar,Kabuto,Kabutops,Aerodactyl,Snorlax,Articuno,Zapdos,Moltres,Dratini,Dragonair,Dragonite,Mewtwo,Mew".split(",");
-const N=NAMES.length,PER=9,PAGES=Math.ceil(N/PER),S=Math.ceil((PAGES+3)/2);
+const N=NAMES.length,PER=9,PAGES=Math.ceil(N/PER),S=Math.ceil(PAGES/2);
 const ORDER=["Common","Uncommon","Rare","Rare Holo","Rare Holo EX","Rare Holo GX","Rare Holo V","Rare Holo VMAX","Rare Holo VSTAR","Double Rare","Ultra Rare","Illustration Rare","Special Illustration Rare","Hyper Rare","Rare Secret","Rare Rainbow","Promo"];
 const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
 const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
@@ -260,14 +262,17 @@ async function loadCards(n){
 
 const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}" loading="lazy"><div class="shine"></div></div>`;
 const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${PAGES}</div></div></div>`;
+
+/* Construir Hojas: Portada + Páginas continuas */
 const faces=[
- `<div class="fc cover fr theme-red" id="cv"><div class="ball"></div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
- `<div class="fc bk st"><div class="pgi"><h2>INICIO</h2><p style="margin-top:20%">Selecciona cualquier hueco para añadir o cambiar cartas reales de Pokémon TCG.</p></div></div>`];
-for(let p=0;p<PAGES;p++)faces.push(pgFace(p,(p%2===0)?"fr":"bk"));
-while(faces.length<2*S)faces.push(`<div class="fc bk st"><div class="pgi"><h2>FIN</h2><p>Primera generación completada.</p></div></div>`);
+ `<div class="fc cover fr theme-red" id="cv"><div class="ball"></div><div class="cover-badge">KANTO GEN I</div><b>POKÉDEX</b><b>ÁLBUM TCG</b><small>TOCA PARA ABRIR</small></div>`,
+ pgFace(0,"bk")
+];
+for(let p=1;p<PAGES;p++)faces.push(pgFace(p,(p%2===1)?"fr":"bk"));
+while(faces.length<2*(S+1))faces.push(`<div class="fc bk st"><div class="pgi"><h2>FIN</h2><p>Primera generación completada.</p></div></div>`);
 
 const book=document.getElementById("book");
-book.innerHTML=Array.from({length:S},(_,i)=>`<div class="sh" style="--i:${i};--n:${S}">${faces[2*i]}${faces[2*i+1]}</div>`).join("");
+book.innerHTML=Array.from({length:S+1},(_,i)=>`<div class="sh" style="--i:${i};--n:${S+1}">${faces[2*i]}${faces[2*i+1]}</div>`).join("");
 const sh=[...book.children];
 
 function fill(animNum=null){
@@ -301,13 +306,42 @@ function updateActiveFaces(){
 function go(v, silent=false){
  if(!silent && s!==v) playFlipSound();
  s=Math.max(0,Math.min(S,v));
+ if(s>0){ rotY=0; rotX=0; updateBookRotation(); }
  book.className="book"+(s===S?" end":s>0?" open":"");
  document.getElementById("prev").disabled=s===0;document.getElementById("next").disabled=s===S;
- document.getElementById("lb").textContent=s===0?"PORTADA":s===S?"FIN":`HOJA ${s}/${S-1}`;
+ document.getElementById("lb").textContent=s===0?"PORTADA":s===S?"FIN":`PÁGINAS ${s*2-1}-${s*2}`;
  updateActiveFaces();
 }
 
-/* ===== Modal y Buscador ===== */
+/* ===== Rotación 360° en Portada ===== */
+let isDragging=false, startX=0, startY=0, rotY=0, rotX=0;
+const scene=document.getElementById("scene");
+
+scene.addEventListener("pointerdown", e=>{
+ if(s!==0 || e.target.closest("#cv")) return;
+ isDragging=true; startX=e.clientX; startY=e.clientY;
+});
+
+window.addEventListener("pointermove", e=>{
+ if(!isDragging || s!==0) return;
+ const dx=e.clientX-startX, dy=e.clientY-startY;
+ rotY += dx * 0.5; rotX -= dy * 0.5;
+ rotX = Math.max(-60, Math.min(60, rotX));
+ startX=e.clientX; startY=e.clientY;
+ updateBookRotation();
+});
+
+window.addEventListener("pointerup", ()=>isDragging=false);
+
+function updateBookRotation(){
+ if(s===0){
+  book.style.transform=`translateX(-50%) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+ }else{
+  book.style.transform="";
+ }
+}
+
+/* ===== Modal y Búsqueda ===== */
 let currentCards=[];
 async function openPoke(n){
  const o=document.getElementById("sheet");
@@ -383,8 +417,8 @@ document.getElementById("openBoosterBtn").onclick=async ()=>{
   }catch(e){}
  }
  
- let h=`<div class="sheet-header"><h2>🎁 ¡SOBRE DE SOBRES OBTENIDO!</h2></div>
- <div style="font-size:13px;color:var(--mu);margin-bottom:12px">Toca "Guardar" en cualquier carta para colocarla automáticamente en tu álbum:</div>
+ let h=`<div class="sheet-header"><h2>🎁 ¡SOBRE DE REGALO OBTENIDO!</h2></div>
+ <div style="font-size:13px;color:var(--mu);margin-bottom:12px">Toca "Guardar" en cualquier carta para colocarla en tu álbum:</div>
  <div class="cg">`;
  pulledCards.forEach(item=>{
   h+=`<div class="opt" data-n="${item.num}" data-id="${item.card.id}">${cardHTML(item.card)}<small><b>#${item.num} ${NAMES[item.num-1]}</b><br>${item.card.set}<br><button class="btn" style="margin-top:6px;padding:4px 8px;font-size:10px">Guardar</button></small></div>`;
@@ -402,7 +436,7 @@ document.getElementById("openBoosterBtn").onclick=async ()=>{
  });
 };
 
-/* ===== Filtros de Vista ===== */
+/* ===== Filtros ===== */
 const setFilter=(f, btn)=>{
  currentFilter = f;
  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -413,7 +447,7 @@ document.getElementById('fAll').onclick=e=>setFilter('all',e.target);
 document.getElementById('fOwned').onclick=e=>setFilter('owned',e.target);
 document.getElementById('fEmpty').onclick=e=>setFilter('empty',e.target);
 
-/* ===== Herramientas del HUD ===== */
+/* ===== HUD Tools ===== */
 document.getElementById("exportBtn").onclick=()=>{
  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(picks, null, 2));
  const dlAnchor = document.createElement('a');
@@ -467,7 +501,7 @@ document.getElementById("themeSelect").onchange=e=>{
  cover.className = `fc cover fr ${e.target.value}`;
 };
 
-/* ===== Eventos de Interacción ===== */
+/* ===== Interacción ===== */
 book.addEventListener("click",e=>{
  if(e.target.closest("#cv")){go(1);return}
  const b=e.target.closest(".slot");
@@ -483,7 +517,7 @@ document.getElementById("prev").onclick=()=>go(s-1);
 document.getElementById("next").onclick=()=>go(s+1);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
 
-/* ===== Efectos Holográficos 3D (Ratón y Móvil) ===== */
+/* ===== Efecto Holográfico ===== */
 function setHoloTransform(card, x, y){
  card.style.setProperty("--mx", x*100+"%");
  card.style.setProperty("--my", y*100+"%");
