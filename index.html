@@ -130,6 +130,22 @@ body{margin:0;background:#08080a;color:var(--tx);font-family:system-ui,-apple-sy
 .chart-container{background:#111017;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-top:6px}
 .chart-title{font-size:10px;font-family:var(--px);color:var(--mu);margin-bottom:8px}
 canvas#priceChart{width:100%;height:140px}
+
+/* ===== Pase retro ===== */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:400;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.hud-panel,.sheet,.inspector-container{border:0;border-radius:0;backdrop-filter:none;box-shadow:0 0 0 3px #0b0b0f,0 0 0 6px #c9c2a8,0 0 0 9px #0b0b0f}
+.hud-btn,.btn,.search-input,.hud-input,.hud-select{border-radius:0;border:2px solid #0b0b0f;font-family:var(--px);font-size:9px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.2)}
+.btn:active,.hud-btn:active{transform:translate(2px,2px)}
+.hud-val{text-shadow:2px 2px 0 #0b3b1c}
+.hud-bar{border-radius:0;border:2px solid #0b0b0f;height:12px;background:repeating-linear-gradient(90deg,#2a2833 0 6px,#1f1d27 6px 8px)}
+.hud-bar i{border-radius:0;background:repeating-linear-gradient(90deg,#4ade80 0 6px,#2fa85f 6px 8px)}
+.slot.e{border-radius:0;border-style:solid;border-width:3px;box-shadow:inset 0 0 0 2px #1d1b25}
+.slot.e:hover img.sp{animation:hop .5s steps(2) infinite}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#0b0b0f;color:#f6d36b;border:3px solid #c9c2a8;padding:10px 14px;font-family:var(--px);font-size:9px;z-index:500}
+.pack .opt{animation:rv .5s steps(5) both;animation-delay:calc(var(--k)*.4s)}
+@keyframes rv{from{opacity:0;transform:translateY(40px) scale(.6)}}
+.pack-title{font-family:var(--px);font-size:14px;color:#f6d36b;margin:0}
 </style>
 </head>
 <body>
@@ -158,6 +174,7 @@ canvas#priceChart{width:100%;height:140px}
   <button class="hud-btn" id="importBtn">Importar</button>
   <button class="hud-btn" id="shareLinkBtn">Copiar Link</button>
   <button class="hud-btn" id="refreshPricesBtn" style="grid-column:span 2">Precios ↻</button>
+  <button class="hud-btn" id="packBtn" style="grid-column:span 2;color:#f6d36b">🎴 ABRIR SOBRE</button>
   <input type="file" id="importFile" accept=".json" style="display:none">
  </div>
  
@@ -185,7 +202,7 @@ canvas#priceChart{width:100%;height:140px}
    <div style="font-size:18px;font-weight:bold;color:#4ade80;margin-top:4px;" id="insPrice">45,00 €</div>
    
    <div class="chart-container">
-    <div class="chart-title">EVOLUCIÓN DE PRECIO (ÚLTIMOS 6 MESES)</div>
+    <div class="chart-title">CARDMARKET: MEDIA 30D, 7D, 1D Y TENDENCIA (EUR)</div>
     <canvas id="priceChart"></canvas>
    </div>
    
@@ -203,17 +220,17 @@ let audioCtx;
 function initAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); }
 function playFlipSound(){
  initAudio(); const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
- osc.type = 'sine'; osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+ osc.type = 'square'; osc.frequency.setValueAtTime(120, audioCtx.currentTime);
  osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.12);
- gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+ gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
  osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.12);
 }
 function playPlaceSound(){
  initAudio(); const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
- osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+ osc.type = 'square'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
  osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
- gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+ gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
  osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.25);
 }
@@ -223,20 +240,35 @@ const SPRITE=n=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprite
 const NAMES="Bulbasaur,Ivysaur,Venusaur,Charmander,Charmeleon,Charizard,Squirtle,Wartortle,Blastoise,Caterpie,Metapod,Butterfree,Weedle,Kakuna,Beedrill,Pidgey,Pidgeotto,Pidgeot,Rattata,Raticate,Spearow,Fearow,Ekans,Arbok,Pikachu,Raichu,Sandshrew,Sandslash,Nidoran♀,Nidorina,Nidoqueen,Nidoran♂,Nidorino,Nidoking,Clefairy,Clefable,Vulpix,Ninetales,Jigglypuff,Wigglytuff,Zubat,Golbat,Oddish,Gloom,Vileplume,Paras,Parasect,Venonat,Venomoth,Diglett,Dugtrio,Meowth,Persian,Psyduck,Golduck,Mankey,Primeape,Growlithe,Arcanine,Poliwag,Poliwhirl,Poliwrath,Abra,Kadabra,Alakazam,Machop,Machoke,Machamp,Bellsprout,Weepinbell,Victreebel,Tentacool,Tentacruel,Geodude,Graveler,Golem,Ponyta,Rapidash,Slowpoke,Slowbro,Magnemite,Magneton,Farfetch'd,Doduo,Dodrio,Seel,Dewgong,Grimer,Muk,Shellder,Cloyster,Gastly,Haunter,Gengar,Onix,Drowzee,Hypno,Krabby,Kingler,Voltorb,Electrode,Exeggcute,Exeggutor,Cubone,Marowak,Hitmonlee,Hitmonchan,Lickitung,Koffing,Weezing,Rhyhorn,Rhydon,Chansey,Tangela,Kangaskhan,Horsea,Seadra,Goldeen,Seaking,Staryu,Starmie,Mr. Mime,Scyther,Jynx,Electabuzz,Magmar,Pinsir,Tauros,Magikarp,Gyarados,Lapras,Ditto,Eevee,Vaporeon,Jolteon,Flareon,Porygon,Omanyte,Omastar,Kabuto,Kabutops,Aerodactyl,Snorlax,Articuno,Zapdos,Moltres,Dratini,Dragonair,Dragonite,Mewtwo,Mew".split(",");
 const N=NAMES.length, PER=9, TOTAL_PAGES=Math.ceil(N/PER), S=Math.ceil(TOTAL_PAGES/2);
 const isHolo=r=>!/^(Common|Uncommon|Rare|Promo|Sin rareza)$/.test(r);
+const ORDER=["Common","Uncommon","Rare","Rare Holo","Rare Holo EX","Rare Holo GX","Rare Holo V","Rare Holo VMAX","Rare Holo VSTAR","Double Rare","Ultra Rare","Illustration Rare","Special Illustration Rare","Hyper Rare","Rare Secret","Rare Rainbow","Promo"];
+const rk=r=>{const i=ORDER.indexOf(r);return i<0?99:i};
+const SEL="id,name,rarity,images,set,number,cardmarket";
 const eur=v=>v.toLocaleString("es-ES",{style:"currency",currency:"EUR"});
-let picks={}, s=0, selectedSetFilter="ALL"; const cache={};
+let picks={}, s=0, selectedSetFilter="ALL", viewOnly=false; const cache={};
 
 try{picks=JSON.parse(localStorage.getItem(STORE)||"{}")||{}}catch(e){}
-const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(picks))}catch(e){}};
+const save=()=>{if(viewOnly)return;try{localStorage.setItem(STORE,JSON.stringify(picks))}catch(e){}};
 
 async function loadCards(n){
  if(cache[n])return cache[n]; let all=[],pg=1,total=1;
  while(all.length<total&&pg<=4){
-  const r=await fetch(`${API}/cards?q=${encodeURIComponent("nationalPokedexNumbers:"+n)}&pageSize=250&page=${pg}`);
-  if(!r.ok)break; const j=await r.json(); total=j.totalCount; all=all.concat(j.data); pg++;
+  const r=await fetch(`${API}/cards?q=${encodeURIComponent("nationalPokedexNumbers:"+n)}&pageSize=250&page=${pg}&select=${SEL}`);
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  const j=await r.json(); total=j.totalCount; all=all.concat(j.data); pg++;
  }
- return cache[n]=all.map(c=>{const p=c.cardmarket&&c.cardmarket.prices; return{id:c.id,name:c.name,rarity:c.rarity||"Sin rareza",img:c.images.small,set:c.set.name,number:c.number,price:+((p&&(p.trendPrice??p.averageSellPrice))||0)}});
+ return cache[n]=all.map(mapCard);
 }
+function mapCard(c){const p=(c.cardmarket&&c.cardmarket.prices)||{};
+ return{id:c.id,name:c.name,rarity:c.rarity||"Sin rareza",img:c.images.small,set:c.set.name,number:c.number,price:+(p.trendPrice??p.averageSellPrice??0)||0,hist:[p.avg30,p.avg7,p.avg1,p.trendPrice].map(v=>+v||0)}}
+async function fetchByIds(ids){const out={};for(let i=0;i<ids.length;i+=30){
+ const q=ids.slice(i,i+30).map(x=>`id:"${x}"`).join(" OR ");
+ const r=await fetch(`${API}/cards?q=${encodeURIComponent(q)}&pageSize=250&select=${SEL}`);
+ if(!r.ok) throw new Error("HTTP "+r.status);
+ (await r.json()).data.forEach(c=>out[c.id]=mapCard(c))}return out}
+const esc=s=>String(s??"").replace(/[<>&"']/g,"");
+function clean(c){if(!c||typeof c.id!=="string"||!/^https:\/\/images\.pokemontcg\.io\//.test(c.img))return null;
+ return{id:esc(c.id),name:esc(c.name),rarity:esc(c.rarity),img:c.img.replace(/["'<>]/g,""),set:esc(c.set),number:esc(c.number),price:+c.price||0,hist:Array.isArray(c.hist)?c.hist.slice(0,4).map(v=>+v||0):undefined,sleeve:!!c.sleeve}}
+function toast(m){const d=document.createElement("div");d.className="toast";d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
 
 const cardHTML=c=>`<div class="card ${isHolo(c.rarity)?"holo":""}"><img src="${c.img}" alt="${c.name}"><div class="shine"></div></div>`;
 const pgFace=(p,cls)=>`<div class="fc ${cls}"><div class="pgi"><div class="g" id="g${p}"></div><div class="ft">Página ${p+1} de ${TOTAL_PAGES}</div></div></div>`;
@@ -342,7 +374,7 @@ window.addEventListener("pointerup", ()=>isDragging=false);
 
 function updateBookRotation(){
  if(s===0){
-  book.style.transform=`translateX(-50%) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+  book.style.transform=`translateX(calc(var(--pw) * -.5)) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
  }else{
   book.style.transform="";
  }
@@ -372,17 +404,21 @@ async function openPoke(n){
  const o=document.getElementById("sheet"); o.dataset.n=n;
  o.innerHTML=`<div class="sheet-header"><h2>#${n} ${NAMES[n-1]}</h2></div><div class="msg">Cargando cartas TCG...</div>`;
  document.getElementById("ov").classList.add("open");
- try{currentCards=await loadCards(n)}catch(e){}
+ try{currentCards=await loadCards(n)}catch(e){
+  o.innerHTML=`<div class="sheet-header"><h2>#${n} ${NAMES[n-1]}</h2></div><div class="msg">No se pudieron cargar las cartas (${e.message}).</div><div class="acts"><button class="btn" id="rt">Reintentar</button><button class="btn ghost" id="cl">Cerrar</button></div>`;
+  document.getElementById("rt").onclick=()=>openPoke(n);document.getElementById("cl").onclick=close;return}
  renderCards(n,"");
 }
 
 function renderCards(n,filterText){
  const o=document.getElementById("sheet");
  const query=filterText.toLowerCase().trim();
- const filtered=currentCards.filter(c=>c.set.toLowerCase().includes(query)||c.rarity.toLowerCase().includes(query));
+ const filtered=currentCards.filter(c=>c.set.toLowerCase().includes(query)||c.rarity.toLowerCase().includes(query)).sort((a,b)=>rk(a.rarity)-rk(b.rarity));
  let h=`<div class="sheet-header"><h2>#${n} ${NAMES[n-1]}</h2><input type="text" class="search-input" id="cardSearch" placeholder="🔍 Filtrar rareza/set..." value="${filterText}"></div><div class="cg">`;
+ let lastR="";
  filtered.forEach(c=>{
-  h+=`<div class="opt ${picks[n]&&picks[n].id===c.id?"sel":""}" data-id="${c.id}">${cardHTML(c)}<small><b>${c.set}</b><br>${eur(c.price)}</small></div>`;
+  if(c.rarity!==lastR){lastR=c.rarity;h+=`<h3 style="grid-column:1/-1;margin:8px 0 0">${c.rarity}</h3>`}
+  h+=`<div class="opt ${picks[n]&&picks[n].id===c.id?"sel":""}" data-id="${c.id}">${cardHTML(c)}<small><b>${c.set}</b><br>${c.price?eur(c.price):"sin precio"}</small></div>`;
  });
  h+=`</div><div class="acts">${picks[n]?'<button class="btn ghost" id="insBtn">🔍 Inspeccionar</button><button class="btn ghost" id="rm">Quitar</button>':""}<button class="btn ghost" id="cl">Cerrar</button></div>`;
  o.innerHTML=h;
@@ -407,7 +443,7 @@ function openInspector(num, card){
  const toggleBtn = document.getElementById("toggleSleeveBtn");
  toggleBtn.textContent = card.sleeve ? "⭐ QUITAR SLEEVE" : "⭐ PONER SLEEVE";
  
- drawChart(card.price || 10);
+ drawChart(card);
  ins.classList.add("open");
 }
 
@@ -419,21 +455,17 @@ document.getElementById("toggleSleeveBtn").onclick=()=>{
  }
 };
 
-function drawChart(basePrice){
- const cvs = document.getElementById("priceChart"); const ctx = cvs.getContext("2d");
- cvs.width = cvs.offsetWidth; cvs.height = cvs.offsetHeight;
- const pts = [basePrice * 0.85, basePrice * 0.92, basePrice * 0.88, basePrice * 1.05, basePrice * 0.98, basePrice];
- const max = Math.max(...pts) * 1.1, min = Math.min(...pts) * 0.9, w = cvs.width, h = cvs.height;
- ctx.clearRect(0,0,w,h); ctx.beginPath(); ctx.strokeStyle = "#4ade80"; ctx.lineWidth = 3;
- pts.forEach((p, i)=>{
-  const x = (i / (pts.length - 1)) * (w - 20) + 10, y = h - ((p - min) / (max - min)) * (h - 20) - 10;
-  if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
- });
- ctx.stroke();
- pts.forEach((p, i)=>{
-  const x = (i / (pts.length - 1)) * (w - 20) + 10, y = h - ((p - min) / (max - min)) * (h - 20) - 10;
-  ctx.beginPath(); ctx.fillStyle = "#fff"; ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
- });
+function drawChart(card){
+ const cvs=document.getElementById("priceChart"),ctx=cvs.getContext("2d");
+ cvs.width=cvs.offsetWidth;cvs.height=cvs.offsetHeight;const w=cvs.width,h=cvs.height;ctx.clearRect(0,0,w,h);
+ ctx.font="9px 'Press Start 2P',monospace";ctx.textAlign="center";
+ let pts=(card.hist||[]).slice();const labels=["30D","7D","1D","HOY"];
+ if(!pts.some(v=>v>0)){ctx.fillStyle="#a09cb0";ctx.fillText("SIN DATOS - PULSA PRECIOS",w/2,h/2);return}
+ let last=pts.find(v=>v>0);pts=pts.map(v=>v>0?(last=v):last);
+ const max=Math.max(...pts)*1.1,min=Math.min(...pts)*.9,X=i=>24+i/(pts.length-1)*(w-48),Y=p=>h-24-((p-min)/(max-min||1))*(h-50);
+ ctx.strokeStyle="#4ade80";ctx.lineWidth=3;ctx.beginPath();
+ pts.forEach((p,i)=>i?ctx.lineTo(X(i),Y(p)):ctx.moveTo(X(i),Y(p)));ctx.stroke();
+ pts.forEach((p,i)=>{ctx.fillStyle="#fff";ctx.fillRect(X(i)-4,Y(p)-4,8,8);ctx.fillStyle="#a09cb0";ctx.fillText(labels[i],X(i),h-6);ctx.fillStyle="#f6d36b";ctx.fillText(p.toFixed(2),X(i),Y(p)-10)});
 }
 
 document.getElementById("closeIns").onclick=()=>document.getElementById("inspector").classList.remove("open");
@@ -487,7 +519,7 @@ book.addEventListener("click",e=>{
  const b=e.target.closest(".slot"); if(b&&b.dataset.n) openPoke(+b.dataset.n);
 });
 document.getElementById("sheet").addEventListener("click",e=>{
- const op=e.target.closest(".opt"); if(!op) return;
+ const op=e.target.closest(".opt"); if(!op||op.dataset.pn) return;
  const n=+document.getElementById("sheet").dataset.n, c=cache[n].find(x=>x.id===op.dataset.id);
  if(c){picks[n]=c; playPlaceSound(); save(); close(); fill();}
 });
@@ -495,7 +527,50 @@ document.getElementById("ov").onclick=e=>{if(e.target.id==="ov")close();};
 document.getElementById("prev").onclick=()=>go(s-1);
 document.getElementById("next").onclick=()=>go(s+1);
 
-fill(); go(0, true);
+/* ===== Botones de gestión ===== */
+const $=id=>document.getElementById(id);
+$("exportBtn").onclick=()=>{const b=new Blob([JSON.stringify({app:"pokedex-tcg-album",v:1,picks},null,1)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="coleccion_pokedex_tcg.json";a.click();URL.revokeObjectURL(a.href);toast("COLECCION EXPORTADA")};
+$("importBtn").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+ try{const j=JSON.parse(await f.text()),src=j.picks||j;let k=0;
+  for(const n in src){const c=clean(src[n]);if(+n>=1&&+n<=N&&c){picks[n]=c;k++}}
+  save();fill();toast(k+" CARTAS IMPORTADAS")}catch(err){toast("ARCHIVO NO VALIDO")}e.target.value=""};
+$("shareLinkBtn").onclick=async()=>{const ids=Object.entries(picks).map(([n,c])=>n+":"+c.id).join(",");
+ if(!ids){toast("NO HAY CARTAS");return}
+ const u=location.origin+location.pathname+"#c="+encodeURIComponent(ids);
+ try{await navigator.clipboard.writeText(u);toast("LINK COPIADO")}catch(e){prompt("Copia este link:",u)}};
+$("refreshPricesBtn").onclick=async()=>{if(viewOnly)return;const ids=[...new Set(Object.values(picks).map(c=>c.id))];
+ if(!ids.length){toast("NO HAY CARTAS");return}
+ const b=$("refreshPricesBtn");b.disabled=true;b.textContent="ACTUALIZANDO...";
+ try{const m=await fetchByIds(ids);let k=0;for(const n in picks){const u=m[picks[n].id];if(u){picks[n]={...u,sleeve:picks[n].sleeve};k++}}
+  save();fill();toast(k+" PRECIOS ACTUALIZADOS")}catch(e){toast("ERROR "+e.message)}
+ b.disabled=false;b.textContent="Precios ↻"};
+async function loadShared(){const m=location.hash.match(/^#c=(.+)$/);if(!m)return;
+ const pairs=decodeURIComponent(m[1]).split(",").map(x=>x.split(":")).filter(x=>+x[0]>=1&&+x[0]<=N&&/^[\w-]+$/.test(x[1]||""));
+ if(!pairs.length)return;
+ try{const map=await fetchByIds(pairs.map(x=>x[1]));viewOnly=true;picks={};pairs.forEach(([n,id])=>{if(map[id])picks[n]=map[id]});
+  document.querySelector(".hud-title span").innerHTML='MODO VISITA · <a href="'+location.pathname+'" style="color:#f6d36b">VER LA MIA</a>';
+  fill();toast("COLECCION COMPARTIDA")}catch(e){toast("LINK NO VALIDO")}}
+/* ===== Sobres ===== */
+let pack=[];
+$("packBtn").onclick=async()=>{
+ const o=$("sheet");o.dataset.n="";o.innerHTML='<div class="sheet-header"><h2 class="pack-title">ABRIENDO SOBRE...</h2></div><div class="msg">Barajando cartas</div>';$("ov").classList.add("open");
+ const free=[];for(let n=1;n<=N;n++)if(!picks[n])free.push(n);
+ const pool=free.length>=5?free:Array.from({length:N},(_,i)=>i+1),nums=[];
+ while(nums.length<5){const k=pool[Math.floor(Math.random()*pool.length)];if(!nums.includes(k))nums.push(k)}
+ pack=[];await Promise.all(nums.map(async n=>{try{const cs=await loadCards(n);if(cs.length)pack.push({n,c:cs[Math.floor(Math.random()*cs.length)]})}catch(e){}}));
+ if(!pack.length){o.innerHTML='<div class="sheet-header"><h2 class="pack-title">SOBRE VACIO</h2></div><div class="msg">No se pudo conectar con la API. Inténtalo de nuevo.</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>';$("cl").onclick=close;return}
+ pack.sort((a,b)=>rk(a.c.rarity)-rk(b.c.rarity));
+ o.innerHTML='<div class="sheet-header"><h2 class="pack-title">SOBRE ABIERTO!</h2></div><div class="cg pack">'+pack.map((x,k)=>`<div class="opt" style="--k:${k}" data-pn="${k}">${cardHTML(x.c)}<small><b>#${x.n} ${NAMES[x.n-1]}</b><br>${x.c.rarity}<br>${x.c.price?eur(x.c.price):"sin precio"}${picks[x.n]?"<br>(sustituye a tu carta)":""}</small></div>`).join("")+'</div><div class="msg">Pulsa una carta para ponerla en tu álbum.</div><div class="acts"><button class="btn ghost" id="cl">Cerrar</button></div>';
+ $("cl").onclick=close;pack.forEach((_,k)=>setTimeout(playPlaceSound,400*k+300))};
+$("sheet").addEventListener("click",e=>{const op=e.target.closest(".opt[data-pn]");if(!op)return;
+ const x=pack[+op.dataset.pn];if(!x)return;
+ if(picks[x.n]&&!confirm("Ya tienes una carta en #"+x.n+". ¿Sustituirla?"))return;
+ picks[x.n]=x.c;playPlaceSound();save();close();fill();toast("CARTA AÑADIDA A #"+String(x.n).padStart(3,"0"))});
+document.addEventListener("keydown",e=>{if(e.target.matches("input,select"))return;if(e.key==="ArrowRight")go(s+1);if(e.key==="ArrowLeft")go(s-1)});
+
+fill(); go(0, true); loadShared();
 </script>
 </body>
 </html>
